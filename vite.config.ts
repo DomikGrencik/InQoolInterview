@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,5 +15,5 @@ export default defineConfig({
       "@hooks": path.resolve(__dirname, "src/ts/utils/hooks"),
     },
   },
-  plugins: [react()],
+  plugins: [react(), TanStackRouterVite()],
 });
