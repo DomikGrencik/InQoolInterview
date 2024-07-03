@@ -7,5 +7,16 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@assets/*": ["src/assets/*"],
+      "@scss/*": ["src/scss/*"],
+      "@components/*": ["src/ts/components/*"],
+      "@pages/*": ["src/ts/pages/*"],
+      "@utils/*": ["src/ts/utils/*"],
+      "@hooks/*": ["src/ts/utils/hooks/*"],
+    }
+  }
 }
