@@ -1,3 +1,4 @@
+import Table from "@components/Table";
 import useFetchUsers from "@utils/hooks/useFetchUsers";
 import { FC } from "react";
 
@@ -12,11 +13,8 @@ const Users: FC = () => {
   return (
     <div>
       <div>This is Users page</div>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <div>{data?.map((user) => <div key={user.id}>{user.name}</div>)}</div>
-      )}
+      {/* <MyTable data={data ?? []} isLoading={isLoading} /> */}
+      <Table data={data ?? []} isLoading={isLoading} />
     </div>
   );
 };
