@@ -6,13 +6,13 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { dataSchemaUsers } from "@utils/dataSchemas";
+import { userSchema } from "@utils/dataSchemas";
 import { FC, useState } from "react";
 import { z } from "zod";
-import Input from "@components/Input";
+//import Input from "@components/Input";
 
 interface TableProps {
-  data: z.infer<typeof dataSchemaUsers>;
+  data: z.infer<typeof userSchema>[];
   error?: Error;
   isLoading: boolean;
 }
@@ -20,7 +20,7 @@ interface TableProps {
 const Table: FC<TableProps> = ({ data, isLoading }) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  const columnHelper = createColumnHelper<z.infer<typeof dataSchemaUsers>>();
+  const columnHelper = createColumnHelper<z.infer<typeof userSchema>>();
 
   const columns = [
     columnHelper.accessor("id", {
@@ -74,7 +74,22 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
 
                       {header.column.getCanFilter() ? (
                         <div>
-                          <Input column={header.column} />
+                          <input
+                            type="text"
+                            value={(() => {
+                              const value = header.column.getFilterValue();
+                              return typeof value === "string" ? value : "";
+                            })()}
+                            onChange={(e) =>
+                              header.column.setFilterValue(e.target.value)
+                            }
+                          />
+                          {/* <Input column={header.column} /> */}
+                          <button
+                            onClick={() => header.column.setFilterValue("")}
+                          >
+                            X
+                          </button>
                         </div>
                       ) : null}
                     </th>
@@ -84,7 +99,12 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
             </thead>
             <tbody>
               {table.getRowModel().rows.map((row) => (
-                <tr key={row.id}>
+                <tr
+                  key={row.id}
+                  style={{
+                    background: row.original.banned ? "red" : "inherit",
+                  }}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id}>
                       {flexRender(
@@ -93,6 +113,15 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
                       )}
                     </td>
                   ))}
+                  <td>
+                    <button
+                      onClick={() => {
+                        console.log("Banned user with ID", row.original);
+                      }}
+                    >
+                      ban
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

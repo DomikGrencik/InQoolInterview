@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { API_ROUTE_BASE } from "@utils/variables";
-import { dataSchemaUsers } from "@utils/dataSchemas";
+import { userSchema } from "@utils/dataSchemas";
+import { z } from "zod";
 
 const fetchUsers = async () => {
   const response = await fetch(`${API_ROUTE_BASE}users`, { method: "GET" });
   const json = await response.json();
 
-  return dataSchemaUsers.parse(json);
+  return z.array(userSchema).parse(json);
 };
 
 const useFetchUsers = () => {

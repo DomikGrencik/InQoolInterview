@@ -10,11 +10,14 @@ const Users: FC = () => {
     return null;
   }
 
+  if (!data) {
+    return null;
+  }
+
   return (
     <div>
       <div>This is Users page</div>
-      {/* <MyTable data={data ?? []} isLoading={isLoading} /> */}
-      <Table data={data ?? []} isLoading={isLoading} />
+      <Table data={data} isLoading={isLoading} />
     </div>
   );
 };
