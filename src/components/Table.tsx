@@ -75,6 +75,7 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
                       {header.column.getCanFilter() ? (
                         <div>
                           <input
+                            id="filter"
                             type="text"
                             value={(() => {
                               const value = header.column.getFilterValue();

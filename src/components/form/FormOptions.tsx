@@ -8,5 +8,3 @@ export const usersFormOpts = formOptions<UserFormData>({
     banned: false,
   },
 });
-
-//export const genderOptions = ["male", "female", "other"];
