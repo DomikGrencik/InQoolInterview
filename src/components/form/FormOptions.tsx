@@ -8,3 +8,23 @@ export const usersFormOpts = formOptions<UserFormData>({
     banned: false,
   },
 });
+
+export const userFormFields = [
+  {
+    name: "name",
+    label: "Name",
+    type: "text",
+  },
+  {
+    name: "gender",
+    label: "Gender",
+    type: "select",
+    options: ["female", "male", "other"],
+  },
+  {
+    name: "banned",
+    label: "Banned",
+    type: "select",
+    options: ["true", "false"],
+  },
+];

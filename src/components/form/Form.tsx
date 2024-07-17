@@ -2,7 +2,12 @@ import { useForm } from "@tanstack/react-form";
 import { FC } from "react";
 import { usersFormOpts } from "./FormOptions";
 
-const Form: FC = () => {
+interface FormProps {
+  formOpts?: any;
+  formFields: any[];
+}
+
+const Form: FC<FormProps> = ({ formFields }) => {
   const form = useForm({
     ...usersFormOpts,
     onSubmit: async (values) => {
@@ -21,6 +26,37 @@ const Form: FC = () => {
           form.handleSubmit();
         }}
       >
+        {/* {formFields.map((field) => (
+          <div>
+            <form.Field key={field.name} name={field.name}>
+              {({ fieldApi }) => (
+                <div key={field.name}>
+                  <label htmlFor={field.name}>{field.label}:</label>
+                  {field.type === "select" ? (
+                    <select {...fieldApi} id={field.name}>
+                      {field.options.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      {...fieldApi}
+                      type={field.type}
+                      id={field.name}
+                      autoComplete="on"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                    />
+                  )}
+                </div>
+              )}
+            </form.Field>
+          </div>
+        ))} */}
+
         <div>
           <form.Field
             name="name"
