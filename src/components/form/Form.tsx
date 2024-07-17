@@ -1,17 +1,24 @@
 import { useForm } from "@tanstack/react-form";
 import { FC } from "react";
 import { usersFormOpts } from "./FormOptions";
+import { UserFormData } from "./form-types";
 
 interface FormProps {
+  onSubmit: (values: UserFormData) => Promise<void>;
   formOpts?: any;
   formFields: any[];
 }
 
-const Form: FC<FormProps> = ({ formFields }) => {
+const Form: FC<FormProps> = ({ onSubmit, formFields }) => {
   const form = useForm({
     ...usersFormOpts,
     onSubmit: async (values) => {
-      console.log(values);
+      try {
+        await onSubmit(values.value);
+      } catch (error) {
+        console.error(error);
+      }
+      console.log(values.value);
       form.reset();
     },
   });

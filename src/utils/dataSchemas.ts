@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const userSchema = z.object({
-  id: z.string().optional(),
+  id: z.string(),
   name: z.string(),
   gender: z.enum(["female", "male", "other"]),
   banned: z.boolean(),
