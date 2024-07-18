@@ -9,14 +9,18 @@ import { FC } from "react";
 const Users: FC = () => {
   const postUser = usePostUser();
 
-  const { data, error, isLoading } = useFetchUsers();
+  const {
+    data: usersData,
+    error: usersError,
+    isLoading: usersIsLoading,
+  } = useFetchUsers();
 
-  if (error) {
-    console.error(error.message);
+  if (usersError) {
+    console.error(usersError.message);
     return null;
   }
 
-  if (!data) {
+  if (!usersData) {
     return null;
   }
 
@@ -27,7 +31,7 @@ const Users: FC = () => {
   return (
     <div>
       <div>This is Users page</div>
-      <Table data={data} isLoading={isLoading} />
+      <Table data={usersData} isLoading={usersIsLoading} />
       <Form
         onSubmit={handleSubmit}
         formOpts={usersFormOpts}

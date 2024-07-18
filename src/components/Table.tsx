@@ -7,12 +7,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { userSchema } from "@utils/dataSchemas";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { z } from "zod";
 import Modal from "./Modal";
 import useDeleteUser from "@utils/hooks/useDeleteUser";
 import usePatchUser from "@utils/hooks/usePatchUser";
-//import Input from "@components/Input";
 
 interface TableProps {
   data: z.infer<typeof userSchema>[];
@@ -29,7 +28,20 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
     banned: false,
   });
 
-  const patchUser = usePatchUser(rowData.id);
+  const [resolvedData, setResolvedData] =
+    useState<z.infer<typeof userSchema>[]>(data);
+
+  const { patchUser, data: patchedData, isSuccess } = usePatchUser(rowData.id);
+
+  console.log(patchedData);
+
+  const handlePatch = async (userData: z.infer<typeof userSchema>) => {
+    try {
+      await patchUser(userData);
+    } catch (error) {
+      console.error("Failed to patch user:", error);
+    }
+  };
 
   const deteteUser = useDeleteUser(rowData.id);
 
@@ -56,9 +68,17 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
     }),
   ];
 
+  useEffect(() => {
+    if (isSuccess && patchedData) {
+      setResolvedData((prevData) =>
+        prevData.map((row) => (row.id === patchedData.id ? patchedData : row))
+      );
+    }
+  }, [isSuccess, patchedData]);
+
   const table = useReactTable({
     columns,
-    data,
+    data: resolvedData,
     filterFns: {},
     state: {
       columnFilters,
@@ -101,7 +121,6 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
                                 header.column.setFilterValue(e.target.value)
                               }
                             />
-                            {/* <Input column={header.column} /> */}
                             <button
                               onClick={() => header.column.setFilterValue("")}
                             >
@@ -134,7 +153,7 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
                       <button
                         onClick={() => {
                           setRowData(row.original);
-                          patchUser({
+                          handlePatch({
                             ...row.original,
                             banned: !row.original.banned,
                           });
