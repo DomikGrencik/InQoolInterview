@@ -11,10 +11,10 @@ const fetchUser = async (id: string) => {
   return userSchema.parse(json);
 };
 
-const useFetchUser = (id?: string) => {
+const useFetchUser = (id: string) => {
   const { data, error, isLoading } = useQuery({
     queryKey: [`users/${id}`],
-    queryFn: () => (id ? fetchUser(id) : null),
+    queryFn: () => fetchUser(id),
     enabled: !!id,
   });
 

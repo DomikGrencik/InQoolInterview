@@ -14,6 +14,10 @@ export const userFormFields = [
     name: "name",
     label: "Name",
     type: "text",
+    validation: {
+      type: "required",
+      message: "Name is required",
+    },
   },
   {
     name: "gender",

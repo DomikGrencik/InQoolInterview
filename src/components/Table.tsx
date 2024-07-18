@@ -12,6 +12,7 @@ import { z } from "zod";
 import Modal from "./Modal";
 import useDeleteUser from "@utils/hooks/useDeleteUser";
 import usePatchUser from "@utils/hooks/usePatchUser";
+import useFetchUser from "@utils/hooks/useFetchUser";
 
 interface TableProps {
   data: z.infer<typeof userSchema>[];
@@ -30,6 +31,12 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
 
   const [resolvedData, setResolvedData] =
     useState<z.infer<typeof userSchema>[]>(data);
+
+  const {
+    data: userData,
+    error: userError,
+    isLoading: userIsLoading,
+  } = useFetchUser(rowData.id);
 
   const { patchUser, data: patchedData, isSuccess } = usePatchUser(rowData.id);
 
@@ -66,6 +73,14 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
     }
   }, [isSuccess, patchedData]);
 
+  useEffect(() => {
+    if (userData && !userIsLoading) {
+      setResolvedData((prevData) =>
+        prevData.map((row) => (row.id === userData.id ? userData : row))
+      );
+    }
+  }, [userData, userIsLoading]);
+
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const columnHelper = createColumnHelper<z.infer<typeof userSchema>>();
@@ -100,6 +115,11 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
   });
+
+  if (userError) {
+    console.error(userError.message);
+    return null;
+  }
 
   return (
     <>

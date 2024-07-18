@@ -3,3 +3,11 @@ export type UserFormData = {
   gender: "female" | "male" | "other";
   banned: boolean;
 };
+
+/* export type UserFormFields = {
+  name: string;
+  label: string;
+  type: string;
+  options?: string[];
+  optionsType?: string;
+}; */
