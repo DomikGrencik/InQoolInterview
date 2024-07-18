@@ -6,7 +6,7 @@ const useDeleteUser = (id: string) => {
 
   const { mutateAsync: deleteUser } = useMutation({
     mutationFn: async () => {
-      const response = await fetch(`${API_ROUTE_BASE}delete/${id}`, {
+      const response = await fetch(`${API_ROUTE_BASE}users/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {

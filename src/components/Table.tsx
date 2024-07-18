@@ -33,9 +33,10 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
 
   const { patchUser, data: patchedData, isSuccess } = usePatchUser(rowData.id);
 
-  console.log(patchedData);
+  const deteteUser = useDeleteUser(rowData.id);
 
   const handlePatch = async (userData: z.infer<typeof userSchema>) => {
+    setRowData(userData);
     try {
       await patchUser(userData);
     } catch (error) {
@@ -43,7 +44,27 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
     }
   };
 
-  const deteteUser = useDeleteUser(rowData.id);
+  const handleDelete = (userData: z.infer<typeof userSchema>) => {
+    setRowData(userData);
+    deteteUser();
+  };
+
+  const handleModal = (userData: z.infer<typeof userSchema>) => {
+    setRowData(userData);
+    setIsOpen(true);
+  };
+
+  useEffect(() => {
+    setResolvedData(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (isSuccess && patchedData) {
+      setResolvedData((prevData) =>
+        prevData.map((row) => (row.id === patchedData.id ? patchedData : row))
+      );
+    }
+  }, [isSuccess, patchedData]);
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -67,14 +88,6 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
       enableColumnFilter: false,
     }),
   ];
-
-  useEffect(() => {
-    if (isSuccess && patchedData) {
-      setResolvedData((prevData) =>
-        prevData.map((row) => (row.id === patchedData.id ? patchedData : row))
-      );
-    }
-  }, [isSuccess, patchedData]);
 
   const table = useReactTable({
     columns,
@@ -152,7 +165,6 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
                     <td>
                       <button
                         onClick={() => {
-                          setRowData(row.original);
                           handlePatch({
                             ...row.original,
                             banned: !row.original.banned,
@@ -165,8 +177,7 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
                     <td>
                       <button
                         onClick={() => {
-                          setIsOpen(true);
-                          setRowData(row.original);
+                          handleModal(row.original);
                         }}
                       >
                         edit
@@ -175,8 +186,7 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
                     <td>
                       <button
                         onClick={() => {
-                          setRowData(row.original);
-                          deteteUser();
+                          handleDelete(row.original);
                         }}
                       >
                         delete
@@ -189,6 +199,7 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
           </div>
         )}
       </div>
+
       <Modal
         isOpen={isOpen}
         data={rowData}
