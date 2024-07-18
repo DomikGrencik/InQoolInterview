@@ -26,5 +26,6 @@ export const userFormFields = [
     label: "Banned",
     type: "select",
     options: ["true", "false"],
+    optionsType: "boolean",
   },
 ];

@@ -13,11 +13,11 @@ const Form: FC<FormProps> = ({ onSubmit, formFields }) => {
   const form = useForm({
     ...usersFormOpts,
     onSubmit: async (values) => {
-      try {
+      /* try {
         await onSubmit(values.value);
       } catch (error) {
         console.error(error);
-      }
+      } */
       console.log(values.value);
       form.reset();
     },
@@ -33,15 +33,29 @@ const Form: FC<FormProps> = ({ onSubmit, formFields }) => {
           form.handleSubmit();
         }}
       >
-        {/* {formFields.map((field) => (
-          <div>
-            <form.Field key={field.name} name={field.name}>
-              {({ fieldApi }) => (
-                <div key={field.name}>
-                  <label htmlFor={field.name}>{field.label}:</label>
-                  {field.type === "select" ? (
-                    <select {...fieldApi} id={field.name}>
-                      {field.options.map((option) => (
+        {formFields.map((formField) => (
+          <div key={formField.name}>
+            <form.Field
+              name={formField.name}
+              children={(field) => (
+                <>
+                  <label htmlFor={field.name}>{formField.label}</label>
+                  {formField.type === "select" ? (
+                    <select
+                      id={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) =>
+                        field.handleChange(
+                          formField.optionsType === "boolean"
+                            ? e.target.value === "true"
+                              ? true
+                              : false
+                            : e.target.value
+                        )
+                      }
+                    >
+                      {formField.options.map((option: string) => (
                         <option key={option} value={option}>
                           {option}
                         </option>
@@ -49,8 +63,7 @@ const Form: FC<FormProps> = ({ onSubmit, formFields }) => {
                     </select>
                   ) : (
                     <input
-                      {...fieldApi}
-                      type={field.type}
+                      type={formField.type}
                       id={field.name}
                       autoComplete="on"
                       value={field.state.value}
@@ -58,13 +71,13 @@ const Form: FC<FormProps> = ({ onSubmit, formFields }) => {
                       onChange={(e) => field.handleChange(e.target.value)}
                     />
                   )}
-                </div>
+                </>
               )}
-            </form.Field>
+            />
           </div>
-        ))} */}
+        ))}
 
-        <div>
+        {/* <div>
           <form.Field
             name="name"
             validators={{
@@ -140,7 +153,7 @@ const Form: FC<FormProps> = ({ onSubmit, formFields }) => {
               </>
             )}
           />
-        </div>
+        </div> */}
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
