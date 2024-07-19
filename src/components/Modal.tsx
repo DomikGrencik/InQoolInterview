@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { z } from "zod";
 import Form from "@components/form/Form";
 import { UserFormData } from "./form/form-types";
-import usePatchUser from "@utils/hooks/usePatchUser";
+import usePatchUser from "@utils/hooks/users/usePatchUser";
 import { userFormFields } from "./form/FormOptions";
 import { formOptions } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";

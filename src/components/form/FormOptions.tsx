@@ -1,7 +1,7 @@
 import { formOptions } from "@tanstack/react-form";
-import { UserFormData } from "./form-types";
+import { AnimalFormData, UserFormData } from "./form-types";
 
-export const usersFormOpts = formOptions<UserFormData>({
+export const userFormOpts = formOptions<UserFormData>({
   defaultValues: {
     name: "",
     gender: "other",
@@ -31,5 +31,36 @@ export const userFormFields = [
     type: "select",
     options: ["true", "false"],
     optionsType: "boolean",
+  },
+];
+
+export const animalFormOpts = formOptions<AnimalFormData>({
+  defaultValues: {
+    name: "",
+    type: "other",
+    age: 0,
+  },
+});
+
+export const animalFormFields = [
+  {
+    name: "name",
+    label: "Name",
+    type: "text",
+    validation: {
+      type: "required",
+      message: "Name is required",
+    },
+  },
+  {
+    name: "type",
+    label: "Type",
+    type: "select",
+    options: ["cat", "dog", "other"],
+  },
+  {
+    name: "age",
+    label: "Age",
+    type: "text",
   },
 ];

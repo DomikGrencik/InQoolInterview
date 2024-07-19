@@ -1,6 +1,5 @@
 import {
   ColumnFiltersState,
-  createColumnHelper,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -12,19 +11,19 @@ import { z } from "zod";
 import BlockIcon from "@mui/icons-material/Block";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Modal from "./Modal";
-import useDeleteUser from "@utils/hooks/useDeleteUser";
-import usePatchUser from "@utils/hooks/usePatchUser";
-import useFetchUser from "@utils/hooks/useFetchUser";
+import Modal from "../Modal";
+import useDeleteUser from "@utils/hooks/users/useDeleteUser";
+import usePatchUser from "@utils/hooks/users/usePatchUser";
+import useFetchUser from "@utils/hooks/users/useFetchUser";
 import { IconButton, Tooltip } from "@mui/material";
 
 interface TableProps {
   data: z.infer<typeof userSchema>[];
-  error?: Error;
   isLoading: boolean;
+  columns: any[];
 }
 
-const Table: FC<TableProps> = ({ data, isLoading }) => {
+const Table: FC<TableProps> = ({ data, isLoading, columns }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [rowData, setRowData] = useState<z.infer<typeof userSchema>>({
@@ -87,27 +86,6 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
   }, [userData, userIsLoading]);
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
-  const columnHelper = createColumnHelper<z.infer<typeof userSchema>>();
-
-  const columns = [
-    columnHelper.accessor("id", {
-      header: "ID",
-      enableColumnFilter: false,
-    }),
-    columnHelper.accessor("name", {
-      header: "Name",
-      filterFn: "includesString",
-    }),
-    columnHelper.accessor("gender", {
-      header: "Gender",
-      enableColumnFilter: false,
-    }),
-    columnHelper.accessor("banned", {
-      header: "Banned",
-      enableColumnFilter: false,
-    }),
-  ];
 
   const table = useReactTable({
     columns,

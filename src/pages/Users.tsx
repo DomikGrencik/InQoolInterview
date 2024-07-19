@@ -1,9 +1,10 @@
 import Form from "@components/form/Form";
 import { UserFormData } from "@components/form/form-types";
-import { userFormFields, usersFormOpts } from "@components/form/FormOptions";
-import Table from "@components/Table";
-import useFetchUsers from "@utils/hooks/useFetchUsers";
-import usePostUser from "@utils/hooks/usePostUser";
+import { userFormFields, userFormOpts } from "@components/form/FormOptions";
+import Table from "@components/table/Table";
+import { userColumns } from "@components/table/TableOptions";
+import useFetchUsers from "@utils/hooks/users/useFetchUsers";
+import usePostUser from "@utils/hooks/users/usePostUser";
 import { FC } from "react";
 
 const Users: FC = () => {
@@ -33,12 +34,12 @@ const Users: FC = () => {
       <div className="block">
         <div className="container table-form-layout">
           <div className="table-wrapper">
-            <Table data={usersData} isLoading={usersIsLoading} />
+            <Table data={usersData} isLoading={usersIsLoading} columns={userColumns}/>
           </div>
           <div className="form-alignment">
             <Form
               onSubmit={handleSubmit}
-              formOpts={usersFormOpts}
+              formOpts={userFormOpts}
               formFields={userFormFields}
             />
           </div>

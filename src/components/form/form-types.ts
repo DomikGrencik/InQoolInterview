@@ -4,6 +4,12 @@ export type UserFormData = {
   banned: boolean;
 };
 
+export type AnimalFormData = {
+  name: string;
+  type: "cat" | "dog" | "other";
+  age: number;
+};
+
 /* export type UserFormFields = {
   name: string;
   label: string;
