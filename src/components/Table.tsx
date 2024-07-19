@@ -11,7 +11,7 @@ import { FC, useEffect, useState } from "react";
 import { z } from "zod";
 import BlockIcon from "@mui/icons-material/Block";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import Modal from "./Modal";
 import useDeleteUser from "@utils/hooks/useDeleteUser";
 import usePatchUser from "@utils/hooks/usePatchUser";
@@ -26,7 +26,7 @@ interface TableProps {
 
 const Table: FC<TableProps> = ({ data, isLoading }) => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const [rowData, setRowData] = useState<z.infer<typeof userSchema>>({
     id: "",
     name: "",
@@ -132,7 +132,7 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
         {isLoading ? (
           <div>Loading...</div>
         ) : (
-          <div className="table-wrapper">
+          <div>
             <table>
               <thead>
                 {table.getHeaderGroups().map((headerGroup) => (
@@ -173,7 +173,7 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
               </thead>
               <tbody>
                 {table.getRowModel().rows.map((row) => (
-                  <tr className="tr-body" key={row.id}>
+                  <tr key={row.id}>
                     {row.getVisibleCells().map((cell) => (
                       <td key={cell.id}>
                         {flexRender(
@@ -216,7 +216,7 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
                       </Tooltip>
                     </td>
                     <td>
-                    <Tooltip title="Delete">
+                      <Tooltip title="Delete">
                         <IconButton
                           sx={{
                             color: "inherit",

@@ -4,14 +4,57 @@ tbody,
 tr,
 th,
 td {
-  border-right: 1px solid var(--tertiary-dark);
-  border-collapse: collapse;
   padding: 0.5rem;
 }
 
 table {
+  border: none;
+  border-collapse: collapse;
   background: var(--secondary-dark);
   width: 100%;
+
+  th {
+    border-left: 1px solid var(--tertiary-dark);
+    border-right: 1px solid var(--tertiary-dark);
+
+    &:first-child {
+      border-left: none;
+    }
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  td {
+    border-left: 1px solid var(--tertiary-dark);
+    border-right: 1px solid var(--tertiary-dark);
+
+    &:first-child {
+      border-left: none;
+    }
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  tr {
+    border-bottom: 1px solid var(--tertiary-dark);
+    border-top: 1px solid var(--tertiary-dark);
+
+    &:first-child {
+      border-top: none;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  thead {
+    border-bottom: 1px solid var(--tertiary-dark);
+  }
 }
 
 thead {
@@ -21,13 +64,4 @@ thead {
 tbody {
   color: var(--font-light-accent);
   background: var(--primary-dark);
-}
-
-.table-wrapper {
-  overflow-x: auto;
-  //border-radius: 1rem 0 0 1rem;
-}
-
-.tr-body {
-  border-top: 1px solid var(--tertiary-dark);
 }

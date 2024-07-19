@@ -1,7 +1,6 @@
 .table-form-layout {
   display: grid;
   grid-template-columns: 1fr min-content;
-  gap: 1rem;
   border: 1px solid var(--tertiary-dark);
   border-radius: 1rem;
   background: var(--secondary-dark);
@@ -16,9 +15,16 @@
   position: -webkit-sticky;
   position: sticky;
   top: 80px;
-  padding: 1rem 1rem 1rem 0;
+  padding: 1rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 1rem 0 0 1rem;
+  border-right: 1px solid var(--tertiary-dark);
 
   @media screen and (max-width: 768px) {
-    padding: 1rem;
+    border-radius: inherit;
+    border: none;
   }
 }
