@@ -1,101 +1,39 @@
 import {
+  ColumnDef,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { userSchema } from "@utils/dataSchemas";
-import { FC, useEffect, useState } from "react";
-import { z } from "zod";
+import { useState } from "react";
+import { IconButton, Tooltip } from "@mui/material";
 import BlockIcon from "@mui/icons-material/Block";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Modal from "../Modal";
-import useDeleteUser from "@utils/hooks/users/useDeleteUser";
-import usePatchUser from "@utils/hooks/users/usePatchUser";
-import useFetchUser from "@utils/hooks/users/useFetchUser";
-import { IconButton, Tooltip } from "@mui/material";
 
-interface TableProps {
-  data: z.infer<typeof userSchema>[];
+interface TableProps<T> {
+  data: T[];
   isLoading: boolean;
-  columns: any[];
-  actions?:{
-    ban: (userData: z.infer<typeof userSchema>) => void;
-    edit: (userData: z.infer<typeof userSchema>) => void;
-    delete: (userData: z.infer<typeof userSchema>) => void;
-  
-  }
+  columns: ColumnDef<T,unknown>[];
+  actions?: {
+    ban?: (rowData: T) => void;
+    edit?: (rowData: T) => void;
+    delete?: (rowData: T) => void;
+  };
 }
 
-const Table: FC<TableProps> = ({ data, isLoading, columns }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const [rowData, setRowData] = useState<z.infer<typeof userSchema>>({
-    id: "",
-    name: "",
-    gender: "other",
-    banned: false,
-  });
-
-  const [resolvedData, setResolvedData] =
-    useState<z.infer<typeof userSchema>[]>(data);
-
-  const {
-    data: userData,
-    error: userError,
-    isLoading: userIsLoading,
-  } = useFetchUser(rowData.id);
-
-  const { patchUser, data: patchedData, isSuccess } = usePatchUser(rowData.id);
-
-  const deteteUser = useDeleteUser(rowData.id);
-
-  const handlePatch = async (userData: z.infer<typeof userSchema>) => {
-    setRowData(userData);
-    try {
-      await patchUser(userData);
-    } catch (error) {
-      console.error("Failed to patch user:", error);
-    }
-  };
-
-  const handleDelete = (userData: z.infer<typeof userSchema>) => {
-    setRowData(userData);
-    deteteUser();
-  };
-
-  const handleModal = (userData: z.infer<typeof userSchema>) => {
-    setRowData(userData);
-    setIsOpen(true);
-  };
-
-  useEffect(() => {
-    setResolvedData(data);
-  }, [data]);
-
-  useEffect(() => {
-    if (isSuccess && patchedData) {
-      setResolvedData((prevData) =>
-        prevData.map((row) => (row.id === patchedData.id ? patchedData : row))
-      );
-    }
-  }, [isSuccess, patchedData]);
-
-  useEffect(() => {
-    if (userData && !userIsLoading) {
-      setResolvedData((prevData) =>
-        prevData.map((row) => (row.id === userData.id ? userData : row))
-      );
-    }
-  }, [userData, userIsLoading]);
-
+const Table = <T extends { banned?: boolean }>({
+  data,
+  isLoading,
+  columns,
+  actions,
+}: TableProps<T>) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     columns,
-    data: resolvedData,
+    data,
     filterFns: {},
     state: {
       columnFilters,
@@ -104,11 +42,6 @@ const Table: FC<TableProps> = ({ data, isLoading, columns }) => {
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
   });
-
-  if (userError) {
-    console.error(userError.message);
-    return null;
-  }
 
   return (
     <>
@@ -129,7 +62,6 @@ const Table: FC<TableProps> = ({ data, isLoading, columns }) => {
                               header.column.columnDef.header,
                               header.getContext()
                             )}
-
                         {header.column.getCanFilter() ? (
                           <div>
                             <input
@@ -152,7 +84,9 @@ const Table: FC<TableProps> = ({ data, isLoading, columns }) => {
                         ) : null}
                       </th>
                     ))}
-                    <th colSpan={3}>Actions</th>
+                    {actions && (
+                      <th colSpan={Object.keys(actions).length}>Actions</th>
+                    )}
                   </tr>
                 ))}
               </thead>
@@ -167,54 +101,55 @@ const Table: FC<TableProps> = ({ data, isLoading, columns }) => {
                         )}
                       </td>
                     ))}
-                    <td>
-                      <Tooltip title={row.original.banned ? "Unban" : "Ban"}>
-                        <IconButton
-                          sx={{
-                            color: row.original.banned ? "red" : "inherit",
-                          }}
-                          aria-label="ban"
-                          onClick={() => {
-                            handlePatch({
-                              ...row.original,
-                              banned: !row.original.banned,
-                            });
-                          }}
-                        >
-                          <BlockIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </td>
-                    <td>
-                      <Tooltip title="Edit">
-                        <IconButton
-                          sx={{
-                            color: "inherit",
-                          }}
-                          aria-label="edit"
-                          onClick={() => {
-                            handleModal(row.original);
-                          }}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </td>
-                    <td>
-                      <Tooltip title="Delete">
-                        <IconButton
-                          sx={{
-                            color: "inherit",
-                          }}
-                          aria-label="delete"
-                          onClick={() => {
-                            handleDelete(row.original);
-                          }}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </td>
+                    {actions && (
+                      <>
+                        {actions.ban && (
+                          <td>
+                            <Tooltip
+                              title={row.original.banned ? "Unban" : "Ban"}
+                            >
+                              <IconButton
+                                sx={{
+                                  color: row.original.banned
+                                    ? "red"
+                                    : "inherit",
+                                }}
+                                aria-label="ban"
+                                onClick={() => actions.ban!(row.original)}
+                              >
+                                <BlockIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
+                        )}
+                        {actions.edit && (
+                          <td>
+                            <Tooltip title="Edit">
+                              <IconButton
+                                sx={{ color: "inherit" }}
+                                aria-label="edit"
+                                onClick={() => actions.edit!(row.original)}
+                              >
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
+                        )}
+                        {actions.delete && (
+                          <td>
+                            <Tooltip title="Delete">
+                              <IconButton
+                                sx={{ color: "inherit" }}
+                                aria-label="delete"
+                                onClick={() => actions.delete!(row.original)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
+                        )}
+                      </>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -222,14 +157,6 @@ const Table: FC<TableProps> = ({ data, isLoading, columns }) => {
           </div>
         )}
       </div>
-
-      <Modal
-        isOpen={isOpen}
-        data={rowData}
-        onClose={() => {
-          setIsOpen(false);
-        }}
-      />
     </>
   );
 };

@@ -1,40 +1,42 @@
-import { createColumnHelper } from "@tanstack/react-table";
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { animalSchema, userSchema } from "@utils/dataSchemas";
 import { z } from "zod";
 
-const columnHelper = createColumnHelper<z.infer<typeof userSchema> | z.infer<typeof animalSchema>>();
+const userColumnHelper = createColumnHelper<z.infer<typeof userSchema>>();
 
-export const userColumns = [
-  columnHelper.accessor("id", {
+export const userColumns: ColumnDef<z.infer<typeof userSchema>, any>[] = [
+  userColumnHelper.accessor("id", {
     header: "ID",
     enableColumnFilter: false,
   }),
-  columnHelper.accessor("name", {
+  userColumnHelper.accessor("name", {
     header: "Name",
   }),
-  columnHelper.accessor("gender", {
+  userColumnHelper.accessor("gender", {
     header: "Gender",
     enableColumnFilter: false,
   }),
-  columnHelper.accessor("banned", {
+  userColumnHelper.accessor("banned", {
     header: "Banned",
     enableColumnFilter: false,
   }),
 ];
 
+const animalColumnHelper = createColumnHelper<z.infer<typeof animalSchema>>();
+
 export const animalColumns = [
-  columnHelper.accessor("id", {
+  animalColumnHelper.accessor("id", {
     header: "ID",
     enableColumnFilter: false,
   }),
-  columnHelper.accessor("name", {
+  animalColumnHelper.accessor("name", {
     header: "Name",
   }),
-  columnHelper.accessor("type", {
+  animalColumnHelper.accessor("type", {
     header: "Type",
     enableColumnFilter: false,
   }),
-  columnHelper.accessor("age", {
+  animalColumnHelper.accessor("age", {
     header: "Age",
     enableColumnFilter: false,
   }),
