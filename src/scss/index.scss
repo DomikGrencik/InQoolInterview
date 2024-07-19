@@ -5,7 +5,11 @@
 // layout
 
 // pages
-//@import "./pages/home.scss";
+@import "./pages/users.scss";
 
 // components
 @import './components/modal.scss';
+@import './components/navbar.scss';
+@import './components/table.scss';
+@import './components/form.scss';
+@import './components/button.scss';

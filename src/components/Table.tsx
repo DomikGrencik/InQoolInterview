@@ -127,7 +127,7 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
         {isLoading ? (
           <div>Loading...</div>
         ) : (
-          <div>
+          <div className="table-wrapper">
             <table>
               <thead>
                 {table.getHeaderGroups().map((headerGroup) => (
@@ -169,6 +169,7 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
               <tbody>
                 {table.getRowModel().rows.map((row) => (
                   <tr
+                    className="tr-body"
                     key={row.id}
                     style={{
                       background: row.original.banned ? "red" : "inherit",

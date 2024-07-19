@@ -29,14 +29,82 @@ const Users: FC = () => {
   };
 
   return (
-    <div>
-      <div>This is Users page</div>
-      <Table data={usersData} isLoading={usersIsLoading} />
-      <Form
-        onSubmit={handleSubmit}
-        formOpts={usersFormOpts}
-        formFields={userFormFields}
-      />
+    <div className="block">
+      <div>
+        <div className="container table-form-layout">
+          <Table data={usersData} isLoading={usersIsLoading} />
+          <div className="form-alignment">
+            <Form
+              onSubmit={handleSubmit}
+              formOpts={usersFormOpts}
+              formFields={userFormFields}
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam!
+      </div>
+      <div>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam!
+      </div>
+      <div>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam!
+      </div>
+      <div>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam!
+      </div>
+      <div>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam!
+      </div>
+      <div>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam!
+      </div>
+      <div>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
+        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
+        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
+        quam!
+      </div>
     </div>
   );
 };

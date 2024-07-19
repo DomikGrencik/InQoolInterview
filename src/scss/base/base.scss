@@ -1,10 +1,11 @@
 :root {
-  --primary-dark: #ffffff;
-  --secondary-dark: #232f3e;
-  --tertiary-dark: #f3a847;
-  --quaternary-dark: #e1e1e1;
-  --font-dark: #232f3e;
-  --font-light: #f3a847;
+  --primary-dark: #1d1d1d;
+  --secondary-dark: #101010ec;
+  --tertiary-dark: #373737;
+  --tertiary-dark-accent: #420992;
+  --font-light: #ffffff;
+  --font-light-accent: #d2d2d2;
+  --font-dark: #101010;
 
   --nav-height: 80px;
 }
@@ -28,8 +29,8 @@ html {
 }
 html {
   font-family: roboto, system-ui, sans-serif;
-  color: var(--font-dark);
   background: var(--primary-dark);
+  color: var(--font-light-accent);
 }
 body {
   margin: 0;
@@ -52,6 +53,13 @@ a {
   font-size: 1rem;
   line-height: 1.5;
   font-weight: 400;
+}
+
+button,
+input,
+select {
+  font-size: 1rem;
+  font-family: roboto;
 }
 
 code {

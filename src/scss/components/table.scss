@@ -1,0 +1,33 @@
+table,
+thead,
+tbody,
+tr,
+th,
+td {
+  border-right: 1px solid var(--tertiary-dark);
+  border-collapse: collapse;
+  padding: 0.5rem;
+}
+
+table {
+  background: var(--secondary-dark);
+  width: 100%;
+}
+
+thead {
+  color: var(--font-light);
+}
+
+tbody {
+  color: var(--font-light-accent);
+  background: var(--primary-dark);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 1rem 0 0 1rem;
+}
+
+.tr-body {
+  border-top: 1px solid var(--tertiary-dark);
+}

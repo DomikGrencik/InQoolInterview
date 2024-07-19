@@ -45,10 +45,11 @@ const Form: FC<FormProps> = ({ onSubmit, formFields, formOpts }) => {
                 },
               })}
               children={(field) => (
-                <>
+                <div className="fields-layout">
                   <label htmlFor={field.name}>{formField.label}</label>
                   {formField.type === "select" ? (
                     <select
+                      className="input"
                       id={field.name}
                       value={field.state.value?.toString()}
                       onBlur={field.handleBlur}
@@ -70,6 +71,7 @@ const Form: FC<FormProps> = ({ onSubmit, formFields, formOpts }) => {
                     </select>
                   ) : (
                     <input
+                      className="input"
                       type={formField.type}
                       id={field.name}
                       autoComplete="on"
@@ -81,7 +83,7 @@ const Form: FC<FormProps> = ({ onSubmit, formFields, formOpts }) => {
                   {field.state.meta.errors ? (
                     <em role="alert">{field.state.meta.errors.join(", ")}</em>
                   ) : null}
-                </>
+                </div>
               )}
             />
           </div>
@@ -89,7 +91,12 @@ const Form: FC<FormProps> = ({ onSubmit, formFields, formOpts }) => {
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
-            <button type="submit" disabled={!canSubmit}>
+            <button
+              id="form-button"
+              className="button"
+              type="submit"
+              disabled={!canSubmit}
+            >
               {isSubmitting ? "..." : "Submit"}
             </button>
           )}
