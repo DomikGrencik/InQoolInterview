@@ -23,8 +23,8 @@ const Form: FC<FormProps> = ({ onSubmit, formFields, formOpts }) => {
   });
 
   return (
-    <div>
-      <div>form</div>
+    <div className="alignment">
+      <h2>Add user</h2>
       <form
         onSubmit={(e) => {
           e.preventDefault();

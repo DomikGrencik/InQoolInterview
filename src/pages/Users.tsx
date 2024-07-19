@@ -29,10 +29,12 @@ const Users: FC = () => {
   };
 
   return (
-    <div className="block">
-      <div>
+    <div>
+      <div className="block">
         <div className="container table-form-layout">
-          <Table data={usersData} isLoading={usersIsLoading} />
+          <div className="table-wrapper">
+            <Table data={usersData} isLoading={usersIsLoading} />
+          </div>
           <div className="form-alignment">
             <Form
               onSubmit={handleSubmit}
@@ -42,68 +44,77 @@ const Users: FC = () => {
           </div>
         </div>
       </div>
-      <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam!
+      <div style={{ width: "200px" }}>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
+        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
+        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
+        dolorem delectus.
       </div>
-      <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam!
+      <div style={{ width: "200px" }}>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
+        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
+        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
+        dolorem delectus.
       </div>
-      <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam!
+      <div style={{ width: "200px" }}>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
+        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
+        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
+        dolorem delectus.
       </div>
-      <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam!
+      <div style={{ width: "200px" }}>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
+        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
+        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
+        dolorem delectus.
       </div>
-      <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam!
+      <div style={{ width: "200px" }}>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
+        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
+        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
+        dolorem delectus.
       </div>
-      <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam!
+      <div style={{ width: "200px" }}>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
+        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
+        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
+        dolorem delectus.
       </div>
-      <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, illo
-        magnam. Totam numquam eveniet ducimus iste hic recusandae neque sequi
-        maxime tempora veniam ipsum nulla laborum unde, consectetur excepturi
-        quam!
+      <div style={{ width: "200px" }}>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
+        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
+        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
+        dolorem delectus.
+      </div>
+      <div style={{ width: "200px" }}>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
+        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
+        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
+        dolorem delectus.
+      </div>
+      <div style={{ width: "200px" }}>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
+        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
+        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
+        dolorem delectus.
+      </div>
+      <div style={{ width: "200px" }}>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
+        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
+        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
+        dolorem delectus.
+      </div>
+      <div style={{ width: "200px" }}>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
+        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
+        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
+        dolorem delectus.
+      </div>
+      <div style={{ width: "200px" }}>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
+        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
+        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
+        dolorem delectus.
       </div>
     </div>
   );

@@ -9,10 +9,14 @@ import {
 import { userSchema } from "@utils/dataSchemas";
 import { FC, useEffect, useState } from "react";
 import { z } from "zod";
+import BlockIcon from "@mui/icons-material/Block";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from '@mui/icons-material/Delete';
 import Modal from "./Modal";
 import useDeleteUser from "@utils/hooks/useDeleteUser";
 import usePatchUser from "@utils/hooks/usePatchUser";
 import useFetchUser from "@utils/hooks/useFetchUser";
+import { IconButton, Tooltip } from "@mui/material";
 
 interface TableProps {
   data: z.infer<typeof userSchema>[];
@@ -22,6 +26,7 @@ interface TableProps {
 
 const Table: FC<TableProps> = ({ data, isLoading }) => {
   const [isOpen, setIsOpen] = useState(false);
+  
   const [rowData, setRowData] = useState<z.infer<typeof userSchema>>({
     id: "",
     name: "",
@@ -168,13 +173,7 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
               </thead>
               <tbody>
                 {table.getRowModel().rows.map((row) => (
-                  <tr
-                    className="tr-body"
-                    key={row.id}
-                    style={{
-                      background: row.original.banned ? "red" : "inherit",
-                    }}
-                  >
+                  <tr className="tr-body" key={row.id}>
                     {row.getVisibleCells().map((cell) => (
                       <td key={cell.id}>
                         {flexRender(
@@ -184,34 +183,52 @@ const Table: FC<TableProps> = ({ data, isLoading }) => {
                       </td>
                     ))}
                     <td>
-                      <button
-                        onClick={() => {
-                          handlePatch({
-                            ...row.original,
-                            banned: !row.original.banned,
-                          });
-                        }}
-                      >
-                        {row.original.banned ? "unban" : "ban"}
-                      </button>
+                      <Tooltip title={row.original.banned ? "Unban" : "Ban"}>
+                        <IconButton
+                          sx={{
+                            color: row.original.banned ? "red" : "inherit",
+                          }}
+                          aria-label="ban"
+                          onClick={() => {
+                            handlePatch({
+                              ...row.original,
+                              banned: !row.original.banned,
+                            });
+                          }}
+                        >
+                          <BlockIcon />
+                        </IconButton>
+                      </Tooltip>
                     </td>
                     <td>
-                      <button
-                        onClick={() => {
-                          handleModal(row.original);
-                        }}
-                      >
-                        edit
-                      </button>
+                      <Tooltip title="Edit">
+                        <IconButton
+                          sx={{
+                            color: "inherit",
+                          }}
+                          aria-label="edit"
+                          onClick={() => {
+                            handleModal(row.original);
+                          }}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
                     </td>
                     <td>
-                      <button
-                        onClick={() => {
-                          handleDelete(row.original);
-                        }}
-                      >
-                        delete
-                      </button>
+                    <Tooltip title="Delete">
+                        <IconButton
+                          sx={{
+                            color: "inherit",
+                          }}
+                          aria-label="delete"
+                          onClick={() => {
+                            handleDelete(row.original);
+                          }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
                     </td>
                   </tr>
                 ))}
