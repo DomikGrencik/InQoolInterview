@@ -21,6 +21,12 @@ interface TableProps {
   data: z.infer<typeof userSchema>[];
   isLoading: boolean;
   columns: any[];
+  actions?:{
+    ban: (userData: z.infer<typeof userSchema>) => void;
+    edit: (userData: z.infer<typeof userSchema>) => void;
+    delete: (userData: z.infer<typeof userSchema>) => void;
+  
+  }
 }
 
 const Table: FC<TableProps> = ({ data, isLoading, columns }) => {
@@ -146,6 +152,7 @@ const Table: FC<TableProps> = ({ data, isLoading, columns }) => {
                         ) : null}
                       </th>
                     ))}
+                    <th colSpan={3}>Actions</th>
                   </tr>
                 ))}
               </thead>

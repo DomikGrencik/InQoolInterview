@@ -3,30 +3,34 @@ import { UserFormData } from "@components/form/form-types";
 import { userFormFields, userFormOpts } from "@components/form/FormOptions";
 import Table from "@components/table/Table";
 import { userColumns } from "@components/table/TableOptions";
-import useFetchUsers from "@utils/hooks/users/useFetchUsers";
-import usePostUser from "@utils/hooks/users/usePostUser";
+import { fetchUsersArgs, postUserArgs } from "@utils/hooks/hookArguments";
+import useFetchRecords from "@utils/hooks/useFetchRecords";
+import usePostRecord from "@utils/hooks/usePostRecord";
 import { FC } from "react";
 
 const Users: FC = () => {
-  const postUser = usePostUser();
+  const postRecord = usePostRecord<UserFormData>(
+    postUserArgs.path,
+    postUserArgs.queryKey
+  );
 
-  const {
-    data: usersData,
-    error: usersError,
-    isLoading: usersIsLoading,
-  } = useFetchUsers();
+  const { data, error, isLoading } = useFetchRecords(
+    fetchUsersArgs.path,
+    fetchUsersArgs.queryKey,
+    fetchUsersArgs.schema
+  );
 
-  if (usersError) {
-    console.error(usersError.message);
+  if (error) {
+    console.error(error.message);
     return null;
   }
 
-  if (!usersData) {
+  if (!data) {
     return null;
   }
 
   const handleSubmit = async (values: UserFormData) => {
-    await postUser(values);
+    await postRecord(values);
   };
 
   return (
@@ -34,7 +38,7 @@ const Users: FC = () => {
       <div className="block">
         <div className="container table-form-layout">
           <div className="table-wrapper">
-            <Table data={usersData} isLoading={usersIsLoading} columns={userColumns}/>
+            <Table data={data} isLoading={isLoading} columns={userColumns} />
           </div>
           <div className="form-alignment">
             <Form
@@ -44,78 +48,6 @@ const Users: FC = () => {
             />
           </div>
         </div>
-      </div>
-      <div style={{ width: "200px" }}>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
-        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
-        dolorem delectus.
-      </div>
-      <div style={{ width: "200px" }}>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
-        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
-        dolorem delectus.
-      </div>
-      <div style={{ width: "200px" }}>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
-        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
-        dolorem delectus.
-      </div>
-      <div style={{ width: "200px" }}>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
-        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
-        dolorem delectus.
-      </div>
-      <div style={{ width: "200px" }}>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
-        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
-        dolorem delectus.
-      </div>
-      <div style={{ width: "200px" }}>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
-        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
-        dolorem delectus.
-      </div>
-      <div style={{ width: "200px" }}>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
-        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
-        dolorem delectus.
-      </div>
-      <div style={{ width: "200px" }}>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
-        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
-        dolorem delectus.
-      </div>
-      <div style={{ width: "200px" }}>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
-        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
-        dolorem delectus.
-      </div>
-      <div style={{ width: "200px" }}>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
-        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
-        dolorem delectus.
-      </div>
-      <div style={{ width: "200px" }}>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
-        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
-        dolorem delectus.
-      </div>
-      <div style={{ width: "200px" }}>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-        doloremque illum magnam dolorum pariatur quidem atque, nesciunt modi
-        laboriosam explicabo culpa impedit nihil sed ex id voluptatum iure
-        dolorem delectus.
       </div>
     </div>
   );

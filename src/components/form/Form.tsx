@@ -1,19 +1,32 @@
 import { useForm } from "@tanstack/react-form";
-import { FC } from "react";
-import { UserFormData } from "./form-types";
 
-interface FormProps {
-  onSubmit: (values: UserFormData) => Promise<void>;
-  formOpts: any;
-  formFields: any[];
+interface FormProps<T, O, F> {
+  onSubmit: (values: T) => Promise<void>;
+  formOpts: O;
+  formFields: F[];
 }
 
-const Form: FC<FormProps> = ({ onSubmit, formFields, formOpts }) => {
+const Form = <
+  T,
+  O,
+  F extends {
+    name: string;
+    label: string;
+    type: string;
+    validation?: { type: string; message: string };
+    options?: string[];
+    optionsType?: string;
+  },
+>({
+  onSubmit,
+  formFields,
+  formOpts,
+}: FormProps<T, O, F>) => {
   const form = useForm({
     ...formOpts,
     onSubmit: async (values) => {
       try {
-        await onSubmit(values.value as UserFormData);
+        await onSubmit(values.value as T);
       } catch (error) {
         console.error(error);
       }
@@ -37,7 +50,7 @@ const Form: FC<FormProps> = ({ onSubmit, formFields, formOpts }) => {
             {...(formField.validation && {
               validators: {
                 onChange: ({ value }) =>
-                  formField.validation.type === "required" && !value
+                  formField.validation?.type === "required" && !value
                     ? formField.validation.message
                     : undefined,
               },
@@ -61,7 +74,7 @@ const Form: FC<FormProps> = ({ onSubmit, formFields, formOpts }) => {
                       )
                     }
                   >
-                    {formField.options.map((option: string) => (
+                    {formField.options?.map((option: string) => (
                       <option key={option} value={option}>
                         {option}
                       </option>
