@@ -11,6 +11,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import BlockIcon from "@mui/icons-material/Block";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ClearIcon from "@mui/icons-material/Clear";
 
 interface TableProps<T> {
   data: T[];
@@ -60,32 +61,45 @@ const Table = <T extends { banned?: boolean }>({
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <th key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                        {header.column.getCanFilter() ? (
-                          <div>
-                            <input
-                              id="filter"
-                              type="text"
-                              value={(() => {
-                                const value = header.column.getFilterValue();
-                                return typeof value === "string" ? value : "";
-                              })()}
-                              onChange={(e) =>
-                                header.column.setFilterValue(e.target.value)
-                              }
-                            />
-                            <button
-                              onClick={() => header.column.setFilterValue("")}
-                            >
-                              X
-                            </button>
+                        <div className="th-alignment">
+                          <div className="th-label">
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
                           </div>
-                        ) : null}
+                          {header.column.getCanFilter() ? (
+                            <div className="filter">
+                              <input
+                                placeholder={`filter ${header.id}...`}
+                                id="filter"
+                                type="text"
+                                value={(() => {
+                                  const value = header.column.getFilterValue();
+                                  return typeof value === "string" ? value : "";
+                                })()}
+                                onChange={(e) =>
+                                  header.column.setFilterValue(e.target.value)
+                                }
+                              />
+                              {(header.column.getFilterValue() as string) && (
+                                <button
+                                  onClick={() =>
+                                    header.column.setFilterValue("")
+                                  }
+                                >
+                                  <ClearIcon sx={{ display: "block" }} />
+                                </button>
+                              )}
+                            </div>
+                          ) : (
+                            <div className="filter">
+                              <input disabled type="text" />
+                            </div>
+                          )}
+                        </div>
                       </th>
                     ))}
                     {actions && (

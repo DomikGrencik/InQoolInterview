@@ -16,6 +16,7 @@ table {
   th {
     border-left: 1px solid var(--tertiary-dark);
     border-right: 1px solid var(--tertiary-dark);
+    padding: 0;
 
     &:first-child {
       border-left: none;
@@ -64,6 +65,64 @@ thead {
 tbody {
   color: var(--font-light-accent);
   background: var(--primary-dark);
+}
+
+.th-alignment {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.th-label {
+  padding: 1rem;
+}
+
+.filter {
+  display: flex;
+
+  input {
+    padding: 1rem;
+    border: none;
+    border: 1px solid var(--primary-dark);
+    background: var(--tertiary-dark);
+    color: var(--font-light-accent);
+    width: 100%;
+
+    &:hover {
+      border: 1px solid var(--font-light-accent);
+    }
+
+    &:focus {
+      outline: none;
+      border: 1px solid var(--font-light);
+    }
+
+    &:disabled {
+      background: var(--primary-dark);
+      border-top: 1px solid var(--tertiary-dark);
+
+      &:hover {
+        border: 1px solid var(--primary-dark);
+        border-top: 1px solid var(--tertiary-dark);
+      }
+    }
+  }
+
+  button {
+    //padding: 0.5rem;
+    border: 1px solid var(--primary-dark);
+    background: var(--font-light);
+    color: var(--font-dark);
+
+    &:hover {
+      border: 1px solid var(--font-light-accent);
+      background: var(--font-light-accent);
+    }
+
+    &:focus {
+      border: 1px solid var(--font-light-accent);
+    }
+  }
 }
 
 .td-action {
