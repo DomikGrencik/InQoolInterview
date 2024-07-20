@@ -9,11 +9,3 @@ export type AnimalFormData = {
   type: "cat" | "dog" | "other";
   age: number;
 };
-
-/* export type UserFormFields = {
-  name: string;
-  label: string;
-  type: string;
-  options?: string[];
-  optionsType?: string;
-}; */

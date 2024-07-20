@@ -1,9 +1,12 @@
 import { useForm } from "@tanstack/react-form";
+import { parseFunction } from "@utils/parseFunction";
+import { ZodSchema } from "zod";
 
 interface FormProps<T, O, F> {
   onSubmit: (values: T) => Promise<void>;
   formOpts: O;
   formFields: F[];
+  schema: ZodSchema<T>;
 }
 
 const Form = <
@@ -15,22 +18,24 @@ const Form = <
     type: string;
     validation?: { type: string; message: string };
     options?: string[];
-    optionsType?: string;
   },
 >({
   onSubmit,
   formFields,
   formOpts,
+  schema, // Add the 'schema' parameter
 }: FormProps<T, O, F>) => {
   const form = useForm({
     ...formOpts,
     onSubmit: async (values) => {
+      const parsedValues = parseFunction(values.value, schema);
+
       try {
-        await onSubmit(values.value as T);
+        await onSubmit(parsedValues as T);
       } catch (error) {
         console.error(error);
       }
-      console.log(values.value);
+      //console.log(values.value);
       form.reset();
     },
   });
@@ -64,15 +69,7 @@ const Form = <
                     id={field.name}
                     value={field.state.value?.toString()}
                     onBlur={field.handleBlur}
-                    onChange={(e) =>
-                      field.handleChange(
-                        formField.optionsType === "boolean"
-                          ? e.target.value === "true"
-                            ? true
-                            : false
-                          : e.target.value
-                      )
-                    }
+                    onChange={(e) => field.handleChange(e.target.value)}
                   >
                     {formField.options?.map((option: string) => (
                       <option key={option} value={option}>

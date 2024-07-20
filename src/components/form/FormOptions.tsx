@@ -30,7 +30,6 @@ export const userFormFields = [
     label: "Banned",
     type: "select",
     options: ["true", "false"],
-    optionsType: "boolean",
   },
 ];
 
@@ -61,6 +60,10 @@ export const animalFormFields = [
   {
     name: "age",
     label: "Age",
-    type: "text",
+    type: "number",
+    validation: {
+      type: "required",
+      message: "Age is required",
+    },
   },
 ];

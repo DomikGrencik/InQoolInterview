@@ -165,6 +165,7 @@ const Users: FC = () => {
               onSubmit={handleSubmit}
               formOpts={userFormOpts}
               formFields={userFormFields}
+              schema={userSchema}
             />
           </div>
         </div>
@@ -180,6 +181,7 @@ const Users: FC = () => {
           onSubmit={handlePatch}
           formOpts={patchFormOpts}
           formFields={userFormFields}
+          schema={userSchema}
         />
       </Modal>
     </div>

@@ -24,7 +24,7 @@ export const userColumns: ColumnDef<z.infer<typeof userSchema>, any>[] = [
 
 const animalColumnHelper = createColumnHelper<z.infer<typeof animalSchema>>();
 
-export const animalColumns = [
+export const animalColumns: ColumnDef<z.infer<typeof animalSchema>, any>[] = [
   animalColumnHelper.accessor("id", {
     header: "ID",
     enableColumnFilter: false,
