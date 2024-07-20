@@ -15,7 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 interface TableProps<T> {
   data: T[];
   isLoading: boolean;
-  columns: ColumnDef<T,unknown>[];
+  columns: ColumnDef<T, unknown>[];
   actions?: {
     ban?: (rowData: T) => void;
     edit?: (rowData: T) => void;
@@ -47,7 +47,11 @@ const Table = <T extends { banned?: boolean }>({
     <>
       <div>
         {isLoading ? (
-          <div>Loading...</div>
+          <div className="loading">
+            {[...Array(10)].map((_, index) => (
+              <div className="loader" key={index} />
+            ))}
+          </div>
         ) : (
           <div>
             <table>
@@ -104,7 +108,7 @@ const Table = <T extends { banned?: boolean }>({
                     {actions && (
                       <>
                         {actions.ban && (
-                          <td>
+                          <td className="td-action">
                             <Tooltip
                               title={row.original.banned ? "Unban" : "Ban"}
                             >
@@ -123,7 +127,7 @@ const Table = <T extends { banned?: boolean }>({
                           </td>
                         )}
                         {actions.edit && (
-                          <td>
+                          <td className="td-action">
                             <Tooltip title="Edit">
                               <IconButton
                                 sx={{ color: "inherit" }}
@@ -136,7 +140,7 @@ const Table = <T extends { banned?: boolean }>({
                           </td>
                         )}
                         {actions.delete && (
-                          <td>
+                          <td className="td-action">
                             <Tooltip title="Delete">
                               <IconButton
                                 sx={{ color: "inherit" }}

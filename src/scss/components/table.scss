@@ -4,7 +4,7 @@ tbody,
 tr,
 th,
 td {
-  padding: 0.5rem;
+  padding: 1rem;
 }
 
 table {
@@ -64,4 +64,52 @@ thead {
 tbody {
   color: var(--font-light-accent);
   background: var(--primary-dark);
+}
+
+.td-action {
+  text-align: center;
+  padding: 0;
+}
+
+.loading {
+  display: grid;
+  grid-template-rows: repeat(auto-fit, 1fr);
+}
+
+.loader {
+  height: 3rem;
+  border-bottom: 1px solid var(--tertiary-dark);
+  //border-radius: 0.5rem;
+  background: linear-gradient(
+    90deg,
+    var(--primary-dark) 35%,
+    var(--secondary-dark) 50%,
+    var(--primary-dark) 65%
+  );
+  background-size: 200% 100%;
+  animation: gradientMove 1s linear infinite;
+
+  &:first-child {
+    background: linear-gradient(
+      90deg,
+      var(--secondary-dark) 35%,
+      var(--primary-dark) 50%,
+      var(--secondary-dark) 65%
+    );
+    background-size: 200% 100%;
+    animation: gradientMove 2s linear infinite;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: -100% 0%;
+  }
 }
