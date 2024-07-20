@@ -20,8 +20,43 @@
 
 .modal {
   width: 80%;
+  max-width: 800px;
   height: auto;
-  background-color: white;
+  max-height: 600px;
+  background: var(--secondary-dark);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 1rem;
+  border: 1px solid var(--tertiary-dark);
   padding: 1rem;
   z-index: 200;
+  overflow-y: auto;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.modal-button {
+  width: 100%;
+  max-width: 300px;
+  background: none;
+  color: red;
+  padding: 1rem;
+  border: 1px solid red;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    background: var(--primary-dark);
+  }
+}
+
+.no-scroll {
+  overflow: hidden;
 }

@@ -177,6 +177,7 @@ const Users: FC = () => {
           setisOpenModalModal(false);
         }}
       >
+        <h2>Edit user</h2>
         <Form
           onSubmit={handlePatch}
           formOpts={patchFormOpts}

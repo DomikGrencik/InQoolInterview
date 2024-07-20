@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -7,6 +7,12 @@ interface ModalProps {
 }
 
 const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
+  useEffect(() => {
+    isOpen
+      ? document.body.classList.add("no-scroll")
+      : document.body.classList.remove("no-scroll");
+  });
+
   if (!isOpen) {
     return null;
   }
@@ -14,10 +20,9 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   return (
     <div className="wrapper">
       <div className="background" onClick={onClose} />
-      <div className="modal">
-        <h1>Modal</h1>
-        {children}
-        <button onClick={onClose}>Close</button>
+      <div className="modal content">
+        <div className="content">{children}</div>
+        <button className="modal-button" onClick={onClose}>Close</button>
       </div>
     </div>
   );
