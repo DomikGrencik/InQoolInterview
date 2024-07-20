@@ -19,18 +19,32 @@ import { userSchema } from "@utils/dataSchemas";
 import usePatchRecord from "@utils/hooks/usePatchRecord";
 import useDeleteRecord from "@utils/hooks/useDeleteRecord";
 import useFetchRecord from "@utils/hooks/useFetchRecord";
+import { useQueryClient } from "@tanstack/react-query";
+import { formOptions } from "@tanstack/react-form";
 
 const Users: FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const queryCient = useQueryClient();
+
+  const [isOpenModal, setisOpenModalModal] = useState(false);
+
   const [rowData, setRowData] = useState<z.infer<typeof userSchema>>({
     id: "",
     name: "",
     gender: "other",
     banned: false,
   });
+
   const [resolvedData, setResolvedData] = useState<
     z.infer<typeof userSchema>[]
   >([]);
+
+  const [patchFormOpts, setPatchFormOpts] = useState(() =>
+    formOptions<UserFormData>({
+      defaultValues: {
+        ...rowData,
+      },
+    })
+  );
 
   const postRecord = usePostRecord<UserFormData>(
     postUserArgs.path,
@@ -67,6 +81,14 @@ const Users: FC = () => {
   );
 
   useEffect(() => {
+    setPatchFormOpts({
+      defaultValues: {
+        ...rowData,
+      },
+    });
+  }, [rowData]);
+
+  useEffect(() => {
     setResolvedData(data || []);
   }, [data]);
 
@@ -75,6 +97,11 @@ const Users: FC = () => {
       setResolvedData((prevData) =>
         prevData.map((row) => (row.id === patchedData.id ? patchedData : row))
       );
+      setPatchFormOpts({
+        defaultValues: {
+          ...patchedData,
+        },
+      });
     }
   }, [isSuccess, patchedData]);
 
@@ -102,7 +129,14 @@ const Users: FC = () => {
 
   const handleEdit = (userData: z.infer<typeof userSchema>) => {
     setRowData(userData);
-    setIsOpen(true);
+    setisOpenModalModal(true);
+  };
+
+  const handlePatch = async (rowData: z.infer<typeof userSchema>) => {
+    await patchRecord(rowData);
+    queryCient.invalidateQueries({
+      queryKey: [`${fetchUserArgs.path}${rowData.id}`],
+    });
   };
 
   const handleDelete = (userData: z.infer<typeof userSchema>) => {
@@ -137,12 +171,17 @@ const Users: FC = () => {
       </div>
 
       <Modal
-        isOpen={isOpen}
-        data={rowData}
+        isOpen={isOpenModal}
         onClose={() => {
-          setIsOpen(false);
+          setisOpenModalModal(false);
         }}
-      />
+      >
+        <Form
+          onSubmit={handlePatch}
+          formOpts={patchFormOpts}
+          formFields={userFormFields}
+        />
+      </Modal>
     </div>
   );
 };
