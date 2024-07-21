@@ -7,7 +7,6 @@ import Table from "@components/table/Table";
 import { animalColumns } from "@components/table/TableOptions";
 import {
   deleteAnimalArgs,
-  fetchAnimalArgs,
   fetchAnimalsArgs,
   patchAnimalArgs,
   postAnimalArgs,
@@ -18,13 +17,9 @@ import Modal from "@components/Modal";
 import { animalSchema } from "@utils/dataSchemas";
 import usePatchRecord from "@utils/hooks/usePatchRecord";
 import useDeleteRecord from "@utils/hooks/useDeleteRecord";
-import useFetchRecord from "@utils/hooks/useFetchRecord";
-import { useQueryClient } from "@tanstack/react-query";
 import { formOptions } from "@tanstack/react-form";
 
 const Animals: FC = () => {
-  const queryCient = useQueryClient();
-
   const [isOpenModal, setisOpenModal] = useState(false);
 
   const [rowData, setRowData] = useState<z.infer<typeof animalSchema>>({
@@ -46,26 +41,15 @@ const Animals: FC = () => {
     })
   );
 
-  const postRecord = usePostRecord<AnimalFormData>(
-    postAnimalArgs.path,
-    postAnimalArgs.queryKey
-  );
-
   const { data, error, isLoading } = useFetchRecords(
     fetchAnimalsArgs.path,
     fetchAnimalsArgs.queryKey,
     fetchAnimalsArgs.schema
   );
 
-  const {
-    data: animalData,
-    error: animalError,
-    isLoading: animalIsLoading,
-  } = useFetchRecord(
-    rowData.id,
-    fetchAnimalArgs.path,
-    fetchAnimalArgs.queryKey,
-    fetchAnimalArgs.schema
+  const postRecord = usePostRecord<AnimalFormData>(
+    postAnimalArgs.path,
+    postAnimalArgs.queryKey
   );
 
   const {
@@ -105,39 +89,34 @@ const Animals: FC = () => {
     }
   }, [isSuccess, patchedData]);
 
-  useEffect(() => {
-    if (animalData && !animalIsLoading) {
-      setResolvedData((prevData) =>
-        prevData.map((row) => (row.id === animalData.id ? animalData : row))
-      );
-    }
-  }, [animalData, animalIsLoading]);
-
-  if (error || animalError) {
-    console.error(error?.message || animalError?.message);
-    return null;
-  }
-
   const handleSubmit = async (values: AnimalFormData) => {
     await postRecord(values);
   };
 
-  const handleEdit = (animalData: z.infer<typeof animalSchema>) => {
-    setRowData(animalData);
+  const handleEdit = (row: z.infer<typeof animalSchema>) => {
+    setRowData(row);
+    setPatchFormOpts({
+      defaultValues: {
+        ...row,
+      },
+    });
     setisOpenModal(true);
   };
 
-  const handlePatch = async (rowData: z.infer<typeof animalSchema>) => {
-    await patchRecord(rowData);
-    queryCient.invalidateQueries({
-      queryKey: [`${fetchAnimalArgs.path}${rowData.id}`],
-    });
+  const handlePatch = async (row: z.infer<typeof animalSchema>) => {
+    setRowData(row);
+    await patchRecord(row);
   };
 
-  const handleDelete = (animalData: z.infer<typeof animalSchema>) => {
-    setRowData(animalData);
+  const handleDelete = (row: z.infer<typeof animalSchema>) => {
+    setRowData(row);
     deleteRecord();
   };
+
+  if (error) {
+    console.error(error.message);
+    return;
+  }
 
   return (
     <div>
@@ -172,6 +151,7 @@ const Animals: FC = () => {
           setisOpenModal(false);
         }}
       >
+        <h2>Edit animal</h2>
         <Form
           onSubmit={handlePatch}
           formOpts={patchFormOpts}

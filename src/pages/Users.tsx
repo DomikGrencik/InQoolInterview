@@ -7,7 +7,6 @@ import Table from "@components/table/Table";
 import { userColumns } from "@components/table/TableOptions";
 import {
   deleteUserArgs,
-  fetchUserArgs,
   fetchUsersArgs,
   patchUserArgs,
   postUserArgs,
@@ -18,14 +17,10 @@ import Modal from "@components/Modal";
 import { userSchema } from "@utils/dataSchemas";
 import usePatchRecord from "@utils/hooks/usePatchRecord";
 import useDeleteRecord from "@utils/hooks/useDeleteRecord";
-import useFetchRecord from "@utils/hooks/useFetchRecord";
-import { useQueryClient } from "@tanstack/react-query";
 import { formOptions } from "@tanstack/react-form";
 
 const Users: FC = () => {
-  const queryCient = useQueryClient();
-
-  const [isOpenModal, setisOpenModalModal] = useState(false);
+  const [isOpenModal, setisOpenModal] = useState(false);
 
   const [rowData, setRowData] = useState<z.infer<typeof userSchema>>({
     id: "",
@@ -46,26 +41,15 @@ const Users: FC = () => {
     })
   );
 
-  const postRecord = usePostRecord<UserFormData>(
-    postUserArgs.path,
-    postUserArgs.queryKey
-  );
-
   const { data, error, isLoading } = useFetchRecords(
     fetchUsersArgs.path,
     fetchUsersArgs.queryKey,
     fetchUsersArgs.schema
   );
 
-  const {
-    data: userData,
-    error: userError,
-    isLoading: userIsLoading,
-  } = useFetchRecord(
-    rowData.id,
-    fetchUserArgs.path,
-    fetchUserArgs.queryKey,
-    fetchUserArgs.schema
+  const postRecord = usePostRecord<UserFormData>(
+    postUserArgs.path,
+    postUserArgs.queryKey
   );
 
   const {
@@ -105,44 +89,39 @@ const Users: FC = () => {
     }
   }, [isSuccess, patchedData]);
 
-  useEffect(() => {
-    if (userData && !userIsLoading) {
-      setResolvedData((prevData) =>
-        prevData.map((row) => (row.id === userData.id ? userData : row))
-      );
-    }
-  }, [userData, userIsLoading]);
-
-  if (error || userError) {
-    console.error(error?.message || userError?.message);
-    return null;
-  }
-
   const handleSubmit = async (values: UserFormData) => {
     await postRecord(values);
   };
 
-  const handleBan = (userData: z.infer<typeof userSchema>) => {
-    setRowData(userData);
-    patchRecord({ ...userData, banned: !userData.banned });
+  const handleBan = (row: z.infer<typeof userSchema>) => {
+    setRowData(row);
+    patchRecord({ ...row, banned: !row.banned });
   };
 
-  const handleEdit = (userData: z.infer<typeof userSchema>) => {
-    setRowData(userData);
-    setisOpenModalModal(true);
-  };
-
-  const handlePatch = async (rowData: z.infer<typeof userSchema>) => {
-    await patchRecord(rowData);
-    queryCient.invalidateQueries({
-      queryKey: [`${fetchUserArgs.path}${rowData.id}`],
+  const handleEdit = (row: z.infer<typeof userSchema>) => {
+    setRowData(row);
+    setPatchFormOpts({
+      defaultValues: {
+        ...row,
+      },
     });
+    setisOpenModal(true);
   };
 
-  const handleDelete = (userData: z.infer<typeof userSchema>) => {
-    setRowData(userData);
+  const handlePatch = async (row: z.infer<typeof userSchema>) => {
+    setRowData(row);
+    await patchRecord(row);
+  };
+
+  const handleDelete = (row: z.infer<typeof userSchema>) => {
+    setRowData(row);
     deleteRecord();
   };
+
+  if (error) {
+    console.error(error.message);
+    return;
+  }
 
   return (
     <div>
@@ -175,7 +154,7 @@ const Users: FC = () => {
       <Modal
         isOpen={isOpenModal}
         onClose={() => {
-          setisOpenModalModal(false);
+          setisOpenModal(false);
         }}
       >
         <h2>Edit user</h2>
