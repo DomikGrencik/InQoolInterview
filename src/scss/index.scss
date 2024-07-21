@@ -1,15 +1,18 @@
 // base
-@import './base/fonts.scss';
-@import './base/base.scss';
+@import "./base/fonts.scss";
+@import "./base/base.scss";
+@import "./base/colors.scss";
 
 // layout
 
 // pages
 @import "./pages/users.scss";
+@import "./pages/indexPage.scss";
 
 // components
-@import './components/modal.scss';
-@import './components/navbar.scss';
-@import './components/table.scss';
-@import './components/form.scss';
-@import './components/button.scss';
+@import "./components/modal.scss";
+@import "./components/navbar.scss";
+@import "./components/table.scss";
+@import "./components/form.scss";
+@import "./components/button.scss";
+@import "./components/footer.scss";

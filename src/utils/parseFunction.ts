@@ -1,6 +1,10 @@
-import { ZodBoolean, ZodNumber, ZodSchema, ZodString } from "zod";
+import { ZodBoolean, ZodNumber, ZodSchema, ZodString, ZodType, ZodObject } from "zod";
 
-export const parseFunction = <T>(data: T, schema: ZodSchema<T>) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const parseFunction = <T extends object, U extends ZodObject<T>>(
+  data: T,
+  schema: U
+) => {
   console.log(data);
 
   const parsedData = { ...data };

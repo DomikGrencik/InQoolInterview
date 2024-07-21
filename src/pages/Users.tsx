@@ -147,26 +147,27 @@ const Users: FC = () => {
   return (
     <div>
       <div className="block">
-        <div className="container table-form-layout">
-          <div className="table-wrapper">
-            <Table
-              data={resolvedData}
-              isLoading={isLoading}
-              columns={userColumns}
-              actions={{
-                ban: handleBan,
-                edit: handleEdit,
-                delete: handleDelete,
-              }}
-            />
-          </div>
-          <div className="form-alignment">
-            <Form
-              onSubmit={handleSubmit}
-              formOpts={userFormOpts}
-              formFields={userFormFields}
-              schema={userSchema}
-            />
+        <div className="container">
+          <div className="table-form-layout">
+            <div className="table-wrapper">
+              <Table
+                data={resolvedData}
+                isLoading={isLoading}
+                columns={userColumns}
+                actions={{
+                  ban: handleBan,
+                  edit: handleEdit,
+                  delete: handleDelete,
+                }}
+              />
+            </div>
+            <div className="form-alignment">
+              <Form
+                onSubmit={handleSubmit}
+                formOpts={userFormOpts}
+                formFields={userFormFields}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -182,7 +183,6 @@ const Users: FC = () => {
           onSubmit={handlePatch}
           formOpts={patchFormOpts}
           formFields={userFormFields}
-          schema={userSchema}
         />
       </Modal>
     </div>

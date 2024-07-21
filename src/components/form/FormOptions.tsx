@@ -14,9 +14,13 @@ export const userFormFields = [
     name: "name",
     label: "Name",
     type: "text",
-    validation: {
-      type: "required",
-      message: "Name is required",
+    validation: (value: unknown) => {
+      if (!value) {
+        return "Name is required";
+      }
+      if (typeof value !== "string") {
+        return "Name must be a string";
+      }
     },
   },
   {
@@ -28,8 +32,7 @@ export const userFormFields = [
   {
     name: "banned",
     label: "Banned",
-    type: "select",
-    options: ["true", "false"],
+    type: "checkbox",
   },
 ];
 
@@ -37,7 +40,7 @@ export const animalFormOpts = formOptions<AnimalFormData>({
   defaultValues: {
     name: "",
     type: "other",
-    age: 0,
+    age: "",
   },
 });
 
@@ -46,9 +49,13 @@ export const animalFormFields = [
     name: "name",
     label: "Name",
     type: "text",
-    validation: {
-      type: "required",
-      message: "Name is required",
+    validation: (value: unknown) => {
+      if (!value) {
+        return "Name is required";
+      }
+      if (typeof value !== "string") {
+        return "Name must be a string";
+      }
     },
   },
   {
@@ -61,9 +68,19 @@ export const animalFormFields = [
     name: "age",
     label: "Age",
     type: "number",
-    validation: {
-      type: "required",
-      message: "Age is required",
+    validation: (value: unknown) => {
+      if (!value) {
+        return "Age is required";
+      }
+      if (typeof value !== "number") {
+        return "Age must be a number";
+      }
+      if (value < 0) {
+        return "Age must be a positive number";
+      }
+      if (value > 30) {
+        return "Age must be less than 30";
+      }
     },
   },
 ];

@@ -24,7 +24,7 @@ interface TableProps<T> {
   };
 }
 
-const Table = <T extends { banned?: boolean }>({
+const Table = <T extends Record<string, string | number | boolean>>({
   data,
   isLoading,
   columns,

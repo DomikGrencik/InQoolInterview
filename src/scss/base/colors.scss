@@ -1,0 +1,39 @@
+:root {
+  --primary-dark: #1d1d1d;
+  --secondary-dark: #101010ec;
+  --tertiary-dark: #373737;
+  --tertiary-dark-accent: #420992;
+  --font-light: #ffffff;
+  --font-light-accent: #d2d2d2;
+  --font-dark: #101010;
+}
+
+.color {
+  &-primary-dark {
+    color: var(--primary-dark);
+  }
+
+  &-secondary-dark {
+    color: var(--secondary-dark);
+  }
+
+  &-tertiary-dark {
+    color: var(--tertiary-dark);
+  }
+
+  &-tertiary-dark-accent {
+    color: var(--tertiary-dark-accent);
+  }
+
+  &-font-light {
+    color: var(--font-light);
+  }
+
+  &-font-light-accent {
+    color: var(--font-light-accent);
+  }
+
+  &-font-dark {
+    color: var(--font-dark);
+  }
+}

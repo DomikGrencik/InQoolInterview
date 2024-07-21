@@ -1,0 +1,91 @@
+.footer {
+  border-top: 1px solid var(--tertiary-dark);
+  background: var(--secondary-dark);
+  padding: 6rem 0 3rem 0;
+}
+
+.bar-vertical {
+  width: 1px;
+  height: 100%;
+  background-color: var(--tertiary-dark);
+}
+
+.footer-alignment {
+  display: grid;
+  grid-template-columns: 1fr min-content 1fr;
+  gap: 1rem;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &-end {
+    align-items: flex-end;
+  }
+
+  &-start {
+    align-items: flex-start;
+  }
+}
+
+.link {
+  color: var(--font-light-accent);
+  text-decoration: none;
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    color: var(--tertiary-dark);
+  }
+
+  &-react {
+    &:hover {
+      color: #58c4dc;
+    }
+  }
+
+  &-ts {
+    &:hover {
+      color: #3178c6;
+    }
+  }
+
+  &-scss {
+    &:hover {
+      color: #bf4080;
+    }
+  }
+
+  &-zod {
+    &:hover {
+      color: #274d82;
+    }
+  }
+
+  &-tanStack {
+    &-router {
+      &:hover {
+        color: #34d399;
+      }
+    }
+
+    &-query {
+      &:hover {
+        color: #ef4444;
+      }
+    }
+
+    &-table {
+      &:hover {
+        color: #3b82f6;
+      }
+    }
+
+    &-form {
+      &:hover {
+        color: #eab308;
+      }
+    }
+  }
+}

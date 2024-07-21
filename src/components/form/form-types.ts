@@ -7,5 +7,5 @@ export type UserFormData = {
 export type AnimalFormData = {
   name: string;
   type: "cat" | "dog" | "other";
-  age: number;
+  age: number | string;
 };

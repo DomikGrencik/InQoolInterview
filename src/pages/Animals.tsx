@@ -142,25 +142,26 @@ const Animals: FC = () => {
   return (
     <div>
       <div className="block">
-        <div className="container table-form-layout">
-          <div className="table-wrapper">
-            <Table
-              data={resolvedData}
-              isLoading={isLoading}
-              columns={animalColumns}
-              actions={{
-                edit: handleEdit,
-                delete: handleDelete,
-              }}
-            />
-          </div>
-          <div className="form-alignment">
-            <Form
-              onSubmit={handleSubmit}
-              formOpts={animalFormOpts}
-              formFields={animalFormFields}
-              schema={animalSchema}
-            />
+        <div className="container">
+          <div className="table-form-layout">
+            <div className="table-wrapper">
+              <Table
+                data={resolvedData}
+                isLoading={isLoading}
+                columns={animalColumns}
+                actions={{
+                  edit: handleEdit,
+                  delete: handleDelete,
+                }}
+              />
+            </div>
+            <div className="form-alignment">
+              <Form
+                onSubmit={handleSubmit}
+                formOpts={animalFormOpts}
+                formFields={animalFormFields}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -175,7 +176,6 @@ const Animals: FC = () => {
           onSubmit={handlePatch}
           formOpts={patchFormOpts}
           formFields={animalFormFields}
-          schema={animalSchema}
         />
       </Modal>
     </div>

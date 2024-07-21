@@ -1,12 +1,9 @@
 import { useForm } from "@tanstack/react-form";
-import { parseFunction } from "@utils/parseFunction";
-import { ZodSchema } from "zod";
 
 interface FormProps<T, O, F> {
   onSubmit: (values: T) => Promise<void>;
   formOpts: O;
   formFields: F[];
-  schema: ZodSchema<T>;
 }
 
 const Form = <
@@ -16,27 +13,23 @@ const Form = <
     name: string;
     label: string;
     type: string;
-    validation?: { type: string; message: string };
+    validation?: (value: unknown) => string | undefined;
     options?: string[];
   },
 >({
   onSubmit,
   formFields,
   formOpts,
-  schema, // Add the 'schema' parameter
 }: FormProps<T, O, F>) => {
   const form = useForm({
     ...formOpts,
     onSubmit: async (values) => {
-      const parsedValues = parseFunction(values.value, schema);
-
       try {
-        await onSubmit(parsedValues as T);
+        await onSubmit(values.value as T);
+        form.reset();
       } catch (error) {
         console.error(error);
       }
-      //console.log(values.value);
-      form.reset();
     },
   });
 
@@ -55,19 +48,17 @@ const Form = <
             {...(formField.validation && {
               validators: {
                 onChange: ({ value }) =>
-                  formField.validation?.type === "required" && !value
-                    ? formField.validation.message
-                    : undefined,
+                  formField.validation?.(value) || undefined
               },
             })}
             children={(field) => (
               <div className="fields-layout">
                 <label htmlFor={field.name}>{formField.label}</label>
-                {formField.type === "select" ? (
+                {formField.type === "select" && (
                   <select
                     className="input"
                     id={field.name}
-                    value={field.state.value?.toString()}
+                    value={field.state.value as string}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
                   >
@@ -77,15 +68,40 @@ const Form = <
                       </option>
                     ))}
                   </select>
-                ) : (
+                )}
+                {formField.type === "text" && (
                   <input
                     className="input"
                     type={formField.type}
                     id={field.name}
                     autoComplete="on"
-                    value={field.state.value?.toString()}
+                    value={field.state.value as string}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                )}
+                {formField.type === "number" && (
+                  <input
+                    className="input"
+                    type={formField.type}
+                    id={field.name}
+                    autoComplete="on"
+                    value={field.state.value as string}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                  />
+                )}
+                {formField.type === "checkbox" && (
+                  <input
+                    className="input"
+                    type={formField.type}
+                    id={field.name}
+                    checked={field.state.value as boolean}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => {
+                      console.log(e.target.checked);
+                      field.handleChange(e.target.checked);
+                    }}
                   />
                 )}
                 {field.state.meta.errors ? (
