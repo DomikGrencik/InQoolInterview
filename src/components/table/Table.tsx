@@ -95,8 +95,7 @@ const Table = <T extends Record<string, string | number | boolean>>({
                               )}
                             </div>
                           ) : (
-                            <div className="filter">
-                              <input disabled type="text" />
+                            <div className="no-filter">
                             </div>
                           )}
                         </div>
