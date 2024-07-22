@@ -4,6 +4,7 @@ import { z } from "zod";
 
 const userColumnHelper = createColumnHelper<z.infer<typeof userSchema>>();
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const userColumns: ColumnDef<z.infer<typeof userSchema>, any>[] = [
   userColumnHelper.accessor("id", {
     header: "ID",
@@ -24,6 +25,7 @@ export const userColumns: ColumnDef<z.infer<typeof userSchema>, any>[] = [
 
 const animalColumnHelper = createColumnHelper<z.infer<typeof animalSchema>>();
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const animalColumns: ColumnDef<z.infer<typeof animalSchema>, any>[] = [
   animalColumnHelper.accessor("id", {
     header: "ID",
