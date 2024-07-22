@@ -1,11 +1,16 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API_ROUTE_BASE } from "@utils/variables";
 
-const usePatchRecord = <T>(id: string, path: string) => {
+const usePatchRecord = <T>(id: string, path: string, queryKey: string) => {
+  const queryClient = useQueryClient();
+
   const {
     mutateAsync: patchRecord,
     data,
     isSuccess,
+    isPending,
+    variables,
+    isError,
   } = useMutation({
     mutationFn: async (values: T) => {
       const response = await fetch(`${API_ROUTE_BASE}${path}${id}`, {
@@ -23,15 +28,18 @@ const usePatchRecord = <T>(id: string, path: string) => {
 
       return response.json();
     },
-    onSuccess: () => {
-      console.log("Record edited successfully:");
+    onSuccess: (data) => {
+      console.log("Record edited successfully:", data);
     },
     onError: (error) => {
       console.error("Error editing user:", error.message);
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [`${queryKey}${id}`] });
+    },
   });
 
-  return { patchRecord, data, isSuccess };
+  return { patchRecord, data, isSuccess, variables, isPending, isError };
 };
 
 export default usePatchRecord;

@@ -7,6 +7,7 @@ import Table from "@components/table/Table";
 import { userColumns } from "@components/table/TableOptions";
 import {
   deleteUserArgs,
+  fetchUserArgs,
   fetchUsersArgs,
   patchUserArgs,
   postUserArgs,
@@ -18,9 +19,14 @@ import { userSchema } from "@utils/dataSchemas";
 import usePatchRecord from "@utils/hooks/usePatchRecord";
 import useDeleteRecord from "@utils/hooks/useDeleteRecord";
 import { formOptions } from "@tanstack/react-form";
+import useFetchRecord from "@utils/hooks/useFetchRecord";
 
 const Users: FC = () => {
   const [isOpenModal, setisOpenModal] = useState(false);
+
+  const [resolvedData, setResolvedData] = useState<
+    z.infer<typeof userSchema>[]
+  >([]);
 
   const [rowData, setRowData] = useState<z.infer<typeof userSchema>>({
     id: "",
@@ -29,9 +35,7 @@ const Users: FC = () => {
     banned: false,
   });
 
-  const [resolvedData, setResolvedData] = useState<
-    z.infer<typeof userSchema>[]
-  >([]);
+  //let someItem = rowData;
 
   const [patchFormOpts, setPatchFormOpts] = useState(() =>
     formOptions<UserFormData>({
@@ -47,7 +51,17 @@ const Users: FC = () => {
     fetchUsersArgs.schema
   );
 
-  const postRecord = usePostRecord<UserFormData>(
+  const {
+    data: dataRecord,
+    error: errorRecord,
+  } = useFetchRecord(
+    rowData.id,
+    fetchUserArgs.path,
+    fetchUserArgs.queryKey,
+    fetchUserArgs.schema
+  );
+
+  const { postRecord } = usePostRecord<UserFormData>(
     postUserArgs.path,
     postUserArgs.queryKey
   );
@@ -55,8 +69,11 @@ const Users: FC = () => {
   const {
     patchRecord,
     data: patchedData,
-    isSuccess,
-  } = usePatchRecord(rowData.id, patchUserArgs.path);
+    isSuccess: isSuccessPatch,
+    variables: variablesPatch,
+    isPending: isPendingPatch,
+    isError: isErrorPatch,
+  } = usePatchRecord(rowData.id, patchUserArgs.path, patchUserArgs.queryKey);
 
   const deleteRecord = useDeleteRecord(
     rowData.id,
@@ -64,30 +81,58 @@ const Users: FC = () => {
     deleteUserArgs.queryKey
   );
 
-  useEffect(() => {
+  /*  useEffect(() => {
     setPatchFormOpts({
       defaultValues: {
         ...rowData,
       },
     });
-  }, [rowData]);
+  }, [rowData]); */
+
+  if (isPendingPatch && rowData !== variablesPatch) {
+    //console.log(variablesPatch, rowData);
+    //setRowData(variablesPatch as z.infer<typeof userSchema>);
+    //someItem = variablesPatch as z.infer<typeof userSchema>;
+    //console.log("someItem", someItem);
+    /* setResolvedData((prevData) =>
+      prevData.map((row) => (row.id === someItem.id ? someItem : row))
+    ); */
+  }
 
   useEffect(() => {
     setResolvedData(data || []);
   }, [data]);
 
   useEffect(() => {
-    if (isSuccess && patchedData) {
+    if (isErrorPatch || isSuccessPatch) {
+      setResolvedData((prevData) =>
+        prevData.map((row) => (row.id === dataRecord?.id ? dataRecord : row))
+      );
+    }
+  }, [dataRecord, isErrorPatch, isSuccessPatch]);
+
+  useEffect(() => {
+    if (isSuccessPatch && patchedData) {
       setResolvedData((prevData) =>
         prevData.map((row) => (row.id === patchedData.id ? patchedData : row))
       );
-      setPatchFormOpts({
+      //setRowData(patchedData);
+      /* setPatchFormOpts({
         defaultValues: {
           ...patchedData,
         },
-      });
+      }); */
     }
-  }, [isSuccess, patchedData]);
+  }, [isSuccessPatch, patchedData]);
+
+  useEffect(() => {
+    if (isPendingPatch) {
+      const variables = variablesPatch as z.infer<typeof userSchema>;
+      setResolvedData((prevData) =>
+        prevData.map((row) => (row.id === variables.id ? variables : row))
+      );
+    }
+  }, [isPendingPatch, variablesPatch]);
 
   const handleSubmit = async (values: UserFormData) => {
     await postRecord(values);
@@ -110,6 +155,11 @@ const Users: FC = () => {
 
   const handlePatch = async (row: z.infer<typeof userSchema>) => {
     setRowData(row);
+    setPatchFormOpts({
+      defaultValues: {
+        ...row,
+      },
+    });
     await patchRecord(row);
   };
 
@@ -118,8 +168,10 @@ const Users: FC = () => {
     deleteRecord();
   };
 
-  if (error) {
-    console.error(error.message);
+  if (error || errorRecord) {
+    console.error(
+      (error && error.message) || (errorRecord && errorRecord.message)
+    );
     return;
   }
 

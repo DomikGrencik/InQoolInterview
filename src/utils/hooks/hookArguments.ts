@@ -23,6 +23,7 @@ export const postUserArgs = {
 export const patchUserArgs = {
   id: "",
   path: "users/",
+  queryKey: "users/",
 };
 
 // when using replace id witch correct one
