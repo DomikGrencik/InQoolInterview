@@ -6,9 +6,7 @@ export const fetchUsersArgs = {
   schema: userSchema,
 };
 
-// when using replace id witch correct one
 export const fetchUserArgs = {
-  id: "",
   path: "users/",
   queryKey: "users/",
   schema: userSchema,
@@ -19,16 +17,12 @@ export const postUserArgs = {
   queryKey: "users",
 };
 
-// when using replace id witch correct one
 export const patchUserArgs = {
-  id: "",
   path: "users/",
   queryKey: "users/",
 };
 
-// when using replace id witch correct one
 export const deleteUserArgs = {
-  id: "",
   path: "users/",
   queryKey: "users",
 };
@@ -39,9 +33,7 @@ export const fetchAnimalsArgs = {
   schema: animalSchema,
 };
 
-// when using replace id witch correct one
 export const fetchAnimalArgs = {
-  id: "",
   path: "animals/",
   queryKey: "animals/",
   schema: animalSchema,
@@ -52,16 +44,12 @@ export const postAnimalArgs = {
   queryKey: "animals",
 };
 
-// when using replace id witch correct one
 export const patchAnimalArgs = {
-  id: "",
   path: "animals/",
   queryKey: "animals/",
 };
 
-// when using replace id witch correct one
 export const deleteAnimalArgs = {
-  id: "",
   path: "animals/",
   queryKey: "animals",
 };
