@@ -56,6 +56,11 @@ select {
   font-family: roboto;
 }
 
+button,
+select {
+  cursor: pointer;
+}
+
 code {
   font-family:
     Menlo,
@@ -77,11 +82,6 @@ img {
   display: grid;
   grid-template-rows: min-content 1fr min-content;
   align-items: center;
-
-  /* min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; */
 }
 
 .container {

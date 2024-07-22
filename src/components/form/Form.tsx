@@ -48,11 +48,13 @@ const Form = <
             {...(formField.validation && {
               validators: {
                 onChange: ({ value }) =>
-                  formField.validation?.(value) || undefined
+                  formField.validation?.(value) || undefined,
               },
             })}
             children={(field) => (
-              <div className="fields-layout">
+              <div
+                className={`fields-layout ${formField.type === "checkbox" ? "fields-layout-row" : "fields-layout-column"}`}
+              >
                 <label htmlFor={field.name}>{formField.label}</label>
                 {formField.type === "select" && (
                   <select
@@ -93,13 +95,12 @@ const Form = <
                 )}
                 {formField.type === "checkbox" && (
                   <input
-                    className="input"
+                    className="checkbox"
                     type={formField.type}
                     id={field.name}
                     checked={field.state.value as boolean}
                     onBlur={field.handleBlur}
                     onChange={(e) => {
-                      console.log(e.target.checked);
                       field.handleChange(e.target.checked);
                     }}
                   />

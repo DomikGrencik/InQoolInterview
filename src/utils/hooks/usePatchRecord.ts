@@ -7,9 +7,9 @@ const usePatchRecord = <T>(id: string, path: string, queryKey: string) => {
   const {
     mutateAsync: patchRecord,
     data,
-    isSuccess,
-    isPending,
     variables,
+    isPending,
+    isSuccess,
     isError,
   } = useMutation({
     mutationFn: async (values: T) => {
@@ -33,8 +33,6 @@ const usePatchRecord = <T>(id: string, path: string, queryKey: string) => {
     },
     onError: (error) => {
       console.error("Error editing user:", error.message);
-    },
-    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: [`${queryKey}${id}`] });
     },
   });

@@ -35,8 +35,6 @@ const Users: FC = () => {
     banned: false,
   });
 
-  //let someItem = rowData;
-
   const [patchFormOpts, setPatchFormOpts] = useState(() =>
     formOptions<UserFormData>({
       defaultValues: {
@@ -51,27 +49,26 @@ const Users: FC = () => {
     fetchUsersArgs.schema
   );
 
-  const {
-    data: dataRecord,
-    error: errorRecord,
-  } = useFetchRecord(
+  const { data: dataRecord, error: errorRecord } = useFetchRecord(
     rowData.id,
     fetchUserArgs.path,
     fetchUserArgs.queryKey,
     fetchUserArgs.schema
   );
 
-  const { postRecord } = usePostRecord<UserFormData>(
-    postUserArgs.path,
-    postUserArgs.queryKey
-  );
+  const {
+    postRecord,
+    variables: postVariables,
+    isPending: isPendingPost,
+    isError: isErrorPost,
+  } = usePostRecord<UserFormData>(postUserArgs.path, postUserArgs.queryKey);
 
   const {
     patchRecord,
     data: patchedData,
-    isSuccess: isSuccessPatch,
-    variables: variablesPatch,
+    variables: patchVariables,
     isPending: isPendingPatch,
+    isSuccess: isSuccessPatch,
     isError: isErrorPatch,
   } = usePatchRecord(rowData.id, patchUserArgs.path, patchUserArgs.queryKey);
 
@@ -81,58 +78,45 @@ const Users: FC = () => {
     deleteUserArgs.queryKey
   );
 
-  /*  useEffect(() => {
-    setPatchFormOpts({
-      defaultValues: {
-        ...rowData,
-      },
-    });
-  }, [rowData]); */
-
-  if (isPendingPatch && rowData !== variablesPatch) {
-    //console.log(variablesPatch, rowData);
-    //setRowData(variablesPatch as z.infer<typeof userSchema>);
-    //someItem = variablesPatch as z.infer<typeof userSchema>;
-    //console.log("someItem", someItem);
-    /* setResolvedData((prevData) =>
-      prevData.map((row) => (row.id === someItem.id ? someItem : row))
-    ); */
-  }
-
   useEffect(() => {
     setResolvedData(data || []);
-  }, [data]);
+
+    if (isErrorPost) {
+      setResolvedData(data || []);
+    }
+  }, [data, isErrorPost]);
 
   useEffect(() => {
-    if (isErrorPatch || isSuccessPatch) {
+    if (isErrorPatch) {
       setResolvedData((prevData) =>
         prevData.map((row) => (row.id === dataRecord?.id ? dataRecord : row))
       );
     }
-  }, [dataRecord, isErrorPatch, isSuccessPatch]);
+  }, [dataRecord, isErrorPatch]);
 
   useEffect(() => {
-    if (isSuccessPatch && patchedData) {
-      setResolvedData((prevData) =>
-        prevData.map((row) => (row.id === patchedData.id ? patchedData : row))
-      );
-      //setRowData(patchedData);
-      /* setPatchFormOpts({
-        defaultValues: {
-          ...patchedData,
-        },
-      }); */
-    }
-  }, [isSuccessPatch, patchedData]);
-
-  useEffect(() => {
-    if (isPendingPatch) {
-      const variables = variablesPatch as z.infer<typeof userSchema>;
+    if (isPendingPatch && patchVariables) {
+      const variables = patchVariables as z.infer<typeof userSchema>;
       setResolvedData((prevData) =>
         prevData.map((row) => (row.id === variables.id ? variables : row))
       );
     }
-  }, [isPendingPatch, variablesPatch]);
+    if (isSuccessPatch && patchedData) {
+      setResolvedData((prevData) =>
+        prevData.map((row) => (row.id === patchedData.id ? patchedData : row))
+      );
+    }
+  }, [isPendingPatch, isSuccessPatch, patchVariables, patchedData]);
+
+  useEffect(() => {
+    if (isPendingPost && postVariables) {
+      const variables: z.infer<typeof userSchema> = {
+        id: "fetching...",
+        ...postVariables,
+      };
+      setResolvedData((prevData) => [...prevData, variables]);
+    }
+  }, [isPendingPost, postVariables]);
 
   const handleSubmit = async (values: UserFormData) => {
     await postRecord(values);

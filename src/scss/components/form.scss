@@ -8,8 +8,17 @@ form {
 
 .fields-layout {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+
+  &-column {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &-row {
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+  }
 }
 
 .input {
@@ -28,5 +37,16 @@ form {
   &:focus {
     outline: none;
     border: 1px solid var(--font-light);
+  }
+}
+
+.checkbox {
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--font-light);
+
+  &:hover {
+    accent-color: var(--font-light-accent);
   }
 }

@@ -4,7 +4,12 @@ import { API_ROUTE_BASE } from "@utils/variables";
 const usePostRecord = <T>(path: string, queryKey: string) => {
   const queryClient = useQueryClient();
 
-  const { mutateAsync: postRecord, variables, isPending } = useMutation({
+  const {
+    mutateAsync: postRecord,
+    variables,
+    isPending,
+    isError,
+  } = useMutation({
     mutationFn: async (values: T) => {
       const response = await fetch(`${API_ROUTE_BASE}${path}`, {
         method: "POST",
@@ -23,14 +28,17 @@ const usePostRecord = <T>(path: string, queryKey: string) => {
     },
     onSuccess: () => {
       console.log("Form submitted successfully");
-      queryClient.invalidateQueries({ queryKey: [queryKey] });
     },
     onError: (error) => {
       console.error("Error submitting form", error.message);
     },
+    onSettled: () => {
+      console.log("Form submission completed");
+      queryClient.invalidateQueries({ queryKey: [queryKey] });
+    },
   });
 
-  return {postRecord, variables, isPending};
+  return { postRecord, variables, isPending, isError };
 };
 
 export default usePostRecord;
