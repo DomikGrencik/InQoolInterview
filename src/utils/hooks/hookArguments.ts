@@ -56,6 +56,7 @@ export const postAnimalArgs = {
 export const patchAnimalArgs = {
   id: "",
   path: "animals/",
+  queryKey: "animals/",
 };
 
 // when using replace id witch correct one

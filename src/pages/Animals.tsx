@@ -7,6 +7,7 @@ import Table from "@components/table/Table";
 import { animalColumns } from "@components/table/TableOptions";
 import {
   deleteAnimalArgs,
+  fetchAnimalArgs,
   fetchAnimalsArgs,
   patchAnimalArgs,
   postAnimalArgs,
@@ -18,9 +19,14 @@ import { animalSchema } from "@utils/dataSchemas";
 import usePatchRecord from "@utils/hooks/usePatchRecord";
 import useDeleteRecord from "@utils/hooks/useDeleteRecord";
 import { formOptions } from "@tanstack/react-form";
+import useFetchRecord from "@utils/hooks/useFetchRecord";
 
 const Animals: FC = () => {
   const [isOpenModal, setisOpenModal] = useState(false);
+
+  const [resolvedData, setResolvedData] = useState<
+    z.infer<typeof animalSchema>[]
+  >([]);
 
   const [rowData, setRowData] = useState<z.infer<typeof animalSchema>>({
     id: "",
@@ -29,17 +35,11 @@ const Animals: FC = () => {
     age: 0,
   });
 
-  const [resolvedData, setResolvedData] = useState<
-    z.infer<typeof animalSchema>[]
-  >([]);
-
-  const [patchFormOpts, setPatchFormOpts] = useState(() =>
-    formOptions<AnimalFormData>({
-      defaultValues: {
-        ...rowData,
-      },
-    })
-  );
+  const patchFormOpts = formOptions<AnimalFormData>({
+    defaultValues: {
+      ...rowData,
+    },
+  });
 
   const { data, error, isLoading } = useFetchRecords(
     fetchAnimalsArgs.path,
@@ -47,16 +47,28 @@ const Animals: FC = () => {
     fetchAnimalsArgs.schema
   );
 
-  const postRecord = usePostRecord<AnimalFormData>(
-    postAnimalArgs.path,
-    postAnimalArgs.queryKey
+  const { data: dataRecord, error: errorRecord } = useFetchRecord(
+    rowData.id,
+    fetchAnimalArgs.path,
+    fetchAnimalArgs.queryKey,
+    fetchAnimalArgs.schema
   );
+
+  const {
+    postRecord,
+    variables: postVariables,
+    isPending: isPendingPost,
+    isError: isErrorPost,
+  } = usePostRecord<AnimalFormData>(postAnimalArgs.path, postAnimalArgs.queryKey);
 
   const {
     patchRecord,
     data: patchedData,
-    isSuccess,
-  } = usePatchRecord(rowData.id, patchAnimalArgs.path);
+    variables: patchVariables,
+    isPending: isPendingPatch,
+    isSuccess: isSuccessPatch,
+    isError: isErrorPatch,
+  } = usePatchRecord(rowData.id, patchAnimalArgs.path, patchAnimalArgs.queryKey);
 
   const deleteRecord = useDeleteRecord(
     rowData.id,
@@ -64,42 +76,69 @@ const Animals: FC = () => {
     deleteAnimalArgs.queryKey
   );
 
-  useEffect(() => {
-    setPatchFormOpts({
-      defaultValues: {
-        ...rowData,
-      },
-    });
-  }, [rowData]);
-
+  /*
+   * Sets resolvedData state to data (or an empty array if data is undefined) whenever data or isErrorPost changes
+   */
   useEffect(() => {
     setResolvedData(data || []);
-  }, [data]);
 
+    if (isErrorPost) {
+      setResolvedData(data || []);
+    }
+  }, [data, isErrorPost]);
+
+  /*
+   * Reverts optimistic update when a patch request fails.
+   * Updates just one element of the resolvedData array using dataRecord fetched by useFetchRecord hook.
+   */
   useEffect(() => {
-    if (isSuccess && patchedData) {
+    if (isErrorPatch) {
+      setResolvedData((prevData) =>
+        prevData.map((row) => (row.id === dataRecord?.id ? dataRecord : row))
+      );
+    }
+  }, [dataRecord, isErrorPatch]);
+
+  /*
+   * Handles optimistic update - sets resolvedData state before patch request is settled (when isPendingPatch is true and patchVariables is defined).
+   * Updates resolvedData when a patch request is successful.
+   * Updates just one element of the resolvedData array using patchedData (response of successful patch request).
+   */
+  useEffect(() => {
+    if (isPendingPatch && patchVariables) {
+      const variables = patchVariables as z.infer<typeof animalSchema>;
+      setResolvedData((prevData) =>
+        prevData.map((row) => (row.id === variables.id ? variables : row))
+      );
+    }
+    if (isSuccessPatch && patchedData) {
       setResolvedData((prevData) =>
         prevData.map((row) => (row.id === patchedData.id ? patchedData : row))
       );
-      setPatchFormOpts({
-        defaultValues: {
-          ...patchedData,
-        },
-      });
     }
-  }, [isSuccess, patchedData]);
+  }, [isPendingPatch, isSuccessPatch, patchVariables, patchedData]);
+
+  /*
+   * Handles optimistic update - sets resolvedData state before post request is settled (when isPendingPost is true and postVariables is defined).
+   */
+  useEffect(() => {
+    if (isPendingPost && postVariables) {
+      const variables: z.infer<typeof animalSchema> = {
+        id: "fetching...",
+        ...postVariables,
+        age: parseInt(postVariables.age as string),
+      };
+      setResolvedData((prevData) => [...prevData, variables]);
+    }
+  }, [isPendingPost, postVariables]);
 
   const handleSubmit = async (values: AnimalFormData) => {
     await postRecord(values);
   };
 
+
   const handleEdit = (row: z.infer<typeof animalSchema>) => {
     setRowData(row);
-    setPatchFormOpts({
-      defaultValues: {
-        ...row,
-      },
-    });
     setisOpenModal(true);
   };
 
@@ -108,13 +147,15 @@ const Animals: FC = () => {
     await patchRecord(row);
   };
 
-  const handleDelete = (row: z.infer<typeof animalSchema>) => {
+  const handleDelete = async (row: z.infer<typeof animalSchema>) => {
     setRowData(row);
-    deleteRecord();
+    await deleteRecord();
   };
 
-  if (error) {
-    console.error(error.message);
+  if (error || errorRecord) {
+    console.error(
+      (error && error.message) || (errorRecord && errorRecord.message)
+    );
     return;
   }
 

@@ -76,6 +76,9 @@ const Users: FC = () => {
     deleteUserArgs.queryKey
   );
 
+  /*
+   * Sets resolvedData state to data (or an empty array if data is undefined) whenever data or isErrorPost changes
+   */
   useEffect(() => {
     setResolvedData(data || []);
 
@@ -84,6 +87,10 @@ const Users: FC = () => {
     }
   }, [data, isErrorPost]);
 
+  /*
+   * Reverts optimistic update when a patch request fails.
+   * Updates just one element of the resolvedData array using dataRecord fetched by useFetchRecord hook.
+   */
   useEffect(() => {
     if (isErrorPatch) {
       setResolvedData((prevData) =>
@@ -92,6 +99,11 @@ const Users: FC = () => {
     }
   }, [dataRecord, isErrorPatch]);
 
+  /*
+   * Handles optimistic update - sets resolvedData state before patch request is settled (when isPendingPatch is true and patchVariables is defined).
+   * Updates resolvedData when a patch request is successful.
+   * Updates just one element of the resolvedData array using patchedData (response of successful patch request).
+   */
   useEffect(() => {
     if (isPendingPatch && patchVariables) {
       const variables = patchVariables as z.infer<typeof userSchema>;
@@ -106,6 +118,9 @@ const Users: FC = () => {
     }
   }, [isPendingPatch, isSuccessPatch, patchVariables, patchedData]);
 
+  /*
+   * Handles optimistic update - sets resolvedData state before post request is settled (when isPendingPost is true and postVariables is defined).
+   */
   useEffect(() => {
     if (isPendingPost && postVariables) {
       const variables: z.infer<typeof userSchema> = {
