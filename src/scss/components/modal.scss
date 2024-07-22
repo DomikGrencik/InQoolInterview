@@ -19,26 +19,29 @@
 }
 
 .modal {
-  width: 80%;
-  max-width: 800px;
-  height: auto;
-  max-height: 600px;
   background: var(--secondary-dark);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border-radius: 1rem;
   border: 1px solid var(--tertiary-dark);
   padding: 1rem;
-  z-index: 200;
-  overflow-y: auto;
+  max-height: 600px;
+}
+
+.modal-wrapper {
+  padding: 1rem;
+  width: 100%;
+  max-width: 800px;
 }
 
 .content {
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+  overflow-y: auto;
 }
 
 .modal-button {

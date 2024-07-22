@@ -35,13 +35,11 @@ const Users: FC = () => {
     banned: false,
   });
 
-  const [patchFormOpts, setPatchFormOpts] = useState(() =>
-    formOptions<UserFormData>({
-      defaultValues: {
-        ...rowData,
-      },
-    })
-  );
+  const patchFormOpts = formOptions<UserFormData>({
+    defaultValues: {
+      ...rowData,
+    },
+  });
 
   const { data, error, isLoading } = useFetchRecords(
     fetchUsersArgs.path,
@@ -122,34 +120,24 @@ const Users: FC = () => {
     await postRecord(values);
   };
 
-  const handleBan = (row: z.infer<typeof userSchema>) => {
+  const handleBan = async (row: z.infer<typeof userSchema>) => {
     setRowData(row);
-    patchRecord({ ...row, banned: !row.banned });
+    await patchRecord({ ...row, banned: !row.banned });
   };
 
   const handleEdit = (row: z.infer<typeof userSchema>) => {
     setRowData(row);
-    setPatchFormOpts({
-      defaultValues: {
-        ...row,
-      },
-    });
     setisOpenModal(true);
   };
 
   const handlePatch = async (row: z.infer<typeof userSchema>) => {
     setRowData(row);
-    setPatchFormOpts({
-      defaultValues: {
-        ...row,
-      },
-    });
     await patchRecord(row);
   };
 
-  const handleDelete = (row: z.infer<typeof userSchema>) => {
+  const handleDelete = async (row: z.infer<typeof userSchema>) => {
     setRowData(row);
-    deleteRecord();
+    await deleteRecord();
   };
 
   if (error || errorRecord) {

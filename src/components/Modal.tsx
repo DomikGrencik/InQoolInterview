@@ -20,9 +20,13 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   return (
     <div className="wrapper">
       <div className="background" onClick={onClose} />
-      <div className="modal content">
-        <div className="content">{children}</div>
-        <button className="modal-button" onClick={onClose}>Close</button>
+      <div className="modal-wrapper">
+        <div className="modal content">
+          <div className="content">{children}</div>
+          <button className="modal-button" onClick={onClose}>
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );
